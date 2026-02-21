@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, Image } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
 import { useEffect, useState } from 'react';
@@ -71,9 +71,7 @@ export default function App() {
         );
 
         if (result.type === 'success' && result.url) {
-          // Parse tokens manually if necessary, although usually deep linking handles the auth change.
           const { queryParams } = Linking.parse(result.url);
-          // If the auth flow returns tokens in the URL (Implicit Flow), we can capture them.
           if (queryParams?.access_token && queryParams?.refresh_token) {
              supabase.auth.setSession({
                 access_token: String(queryParams.access_token),
@@ -102,11 +100,19 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {session ? (
+      {session && session.user ? (
         <View style={styles.content}>
           <Text style={styles.title}>Welcome back!</Text>
+          {session.user.user_metadata?.avatar_url && (
+            <Image
+              source={{ uri: session.user.user_metadata.avatar_url }}
+              style={styles.avatar}
+            />
+          )}
           <Text style={styles.subtitle}>{session.user.email}</Text>
-          <Button title="Sign Out" onPress={signOut} disabled={loading} />
+          <View style={styles.buttonContainer}>
+            <Button title="Sign Out" onPress={signOut} disabled={loading} color="#ff4444" />
+          </View>
         </View>
       ) : (
         <View style={styles.content}>
@@ -134,6 +140,8 @@ const styles = StyleSheet.create({
   content: {
     alignItems: 'center',
     gap: 20,
+    width: '100%',
+    padding: 20,
   },
   title: {
     fontSize: 24,
@@ -142,5 +150,16 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     color: '#666',
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: '#eee',
+  },
+  buttonContainer: {
+    marginTop: 10,
+    width: '50%',
   },
 });
