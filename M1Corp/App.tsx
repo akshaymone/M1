@@ -13,6 +13,13 @@ export default function App() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Log the redirect URL for debugging Supabase config
+    const redirectUrl = Linking.createURL('/auth/callback');
+    console.log('----------------------------------------------------');
+    console.log('ADD THIS URL TO SUPABASE AUTH REDIRECT URLs:');
+    console.log(redirectUrl);
+    console.log('----------------------------------------------------');
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
@@ -51,6 +58,7 @@ export default function App() {
     setLoading(true);
     try {
       const redirectUrl = Linking.createURL('/auth/callback');
+      console.log('Signing in with redirect URL:', redirectUrl);
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
