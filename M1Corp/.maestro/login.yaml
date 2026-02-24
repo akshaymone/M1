@@ -1,0 +1,6 @@
+appId: com.anonymous.M1Corp
+---
+- launchApp
+- assertVisible: "M1Corp"
+- assertVisible: "Community Building App"
+- assertVisible: "Sign in with Google"
