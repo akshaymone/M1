@@ -1,16 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, Alert, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, Image, Modal } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
 import { useEffect, useState } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { supabase } from './lib/supabase';
+import UserList from './components/UserList';
+import MapScreen from './screens/MapScreen';
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
   useEffect(() => {
     // Log the redirect URL for debugging Supabase config
@@ -106,21 +109,42 @@ export default function App() {
     }
   };
 
+  const handleUserPress = (userId: string) => {
+    setSelectedUserId(userId);
+  };
+
+  const closeMap = () => {
+    setSelectedUserId(null);
+  };
+
   return (
     <View style={styles.container}>
       {session && session.user ? (
-        <View style={styles.content}>
-          <Text style={styles.title}>Welcome back!</Text>
-          {session.user.user_metadata?.avatar_url && (
-            <Image
-              source={{ uri: session.user.user_metadata.avatar_url }}
-              style={styles.avatar}
-            />
-          )}
-          <Text style={styles.subtitle}>{session.user.email}</Text>
-          <View style={styles.buttonContainer}>
-            <Button title="Sign Out" onPress={signOut} disabled={loading} color="#ff4444" />
+        <View style={styles.mainContent}>
+          <View style={styles.header}>
+            {session.user.user_metadata?.avatar_url && (
+              <Image
+                source={{ uri: session.user.user_metadata.avatar_url }}
+                style={styles.avatar}
+              />
+            )}
+            <View style={styles.headerText}>
+              <Text style={styles.email}>{session.user.email}</Text>
+              <Button title="Sign Out" onPress={signOut} disabled={loading} color="#ff4444" />
+            </View>
           </View>
+
+          <UserList onUserPress={handleUserPress} currentUserId={session.user.id} />
+
+          <Modal visible={!!selectedUserId} animationType="slide">
+             {selectedUserId && (
+               <MapScreen
+                  userId={selectedUserId}
+                  onClose={closeMap}
+                  currentUserId={session.user.id}
+               />
+             )}
+          </Modal>
         </View>
       ) : (
         <View style={styles.content}>
@@ -142,14 +166,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   content: {
+    flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 20,
-    width: '100%',
+  },
+  mainContent: {
+    flex: 1,
+    paddingTop: 50,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  headerText: {
+    marginLeft: 15,
+    flex: 1,
   },
   title: {
     fontSize: 24,
@@ -160,14 +197,15 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     borderWidth: 2,
     borderColor: '#eee',
   },
-  buttonContainer: {
-    marginTop: 10,
-    width: '50%',
+  email: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
 });
