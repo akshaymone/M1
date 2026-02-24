@@ -8,7 +8,7 @@ M1Corp is a community-building mobile application that empowers users to come to
 - **Backend:** Supabase (PostgreSQL, Authentication)
 - **Authentication:** Google Sign-In via Supabase
 - **Maps:** React Native Maps, Expo Location
-- **Testing:** Detox (E2E), Jest
+- **Testing:** Maestro (E2E)
 
 ## Getting Started
 
@@ -23,14 +23,14 @@ M1Corp is a community-building mobile application that empowers users to come to
     ```
     *Note: This requires Android Studio and an emulator to be set up.*
 
-3.  **Run E2E Tests (Detox):**
-    *   Build the app for testing:
+3.  **Run E2E Tests (Maestro):**
+    *   Install Maestro:
         ```bash
-        detox build -c android.emu.debug
+        powershell -Command "iwr -useb https://get.maestro.mobile.dev | iex"
         ```
-    *   Run the tests:
+    *   Run the tests (with the app running):
         ```bash
-        detox test -c android.emu.debug
+        maestro test .maestro/login.yaml
         ```
 
 ## Configuration
