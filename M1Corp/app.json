@@ -31,8 +31,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.M1Corp",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.anonymous.M1Corp"
     },
     "web": {
       "bundler": "metro",
