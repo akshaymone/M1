@@ -1,0 +1,17 @@
+node_modules/
+.expo/
+dist/
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+.env
+.env.local
+.env.*.local
+
+# Expo directories
+.expo-shared/
+web-build/
+
+# Native directories
+android/
+ios/
