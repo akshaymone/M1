@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, Image, View, ActivityIndicator } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
+import * as AuthSession from 'expo-auth-session';
 import { supabase } from '../../../shared/services/supabase';
 import { colors } from '../../../shared/theme/colors';
 import { spacing } from '../../../shared/theme/spacing';
@@ -15,7 +16,10 @@ export const GoogleSignInButton: React.FC = () => {
   const performOAuth = async () => {
     try {
       setLoading(true);
-      const redirectUri = Linking.createURL('/auth/callback');
+      const redirectUri = AuthSession.makeRedirectUri({
+        scheme: 'm1',
+        path: 'auth/callback',
+      });
       
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -34,13 +38,30 @@ export const GoogleSignInButton: React.FC = () => {
 
       if (res.type === 'success' && res.url) {
         const parsed = Linking.parse(res.url);
-        const { access_token, refresh_token } = parsed.queryParams || {};
+        const code = parsed.queryParams?.code;
         
-        if (access_token && refresh_token) {
-          await supabase.auth.setSession({
-            access_token: access_token as string,
-            refresh_token: refresh_token as string,
-          });
+        if (typeof code === 'string') {
+          // Handle PKCE flow
+          const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+          if (exchangeError) throw exchangeError;
+        } else {
+          // Fallback for Implicit flow (tokens in the URL hash/fragment)
+          // Linking.parse might not include hash in queryParams
+          const hashMatch = res.url.match(/#(.*)/);
+          if (hashMatch) {
+            const hash = hashMatch[1];
+            const hashParams = new URLSearchParams(hash);
+            const accessToken = hashParams.get('access_token');
+            const refreshToken = hashParams.get('refresh_token');
+            
+            if (accessToken && refreshToken) {
+              const { error: sessionError } = await supabase.auth.setSession({
+                access_token: accessToken,
+                refresh_token: refreshToken,
+              });
+              if (sessionError) throw sessionError;
+            }
+          }
         }
       }
     } catch (error) {

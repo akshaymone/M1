@@ -2,6 +2,7 @@
   "expo": {
     "name": "M1",
     "slug": "M1",
+    "scheme": "m1",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
