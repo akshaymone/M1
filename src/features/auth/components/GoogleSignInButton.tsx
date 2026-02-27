@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, Image, View, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
-import * as Linking from 'expo-linking';
-import * as AuthSession from 'expo-auth-session';
 import { supabase } from '../../../shared/services/supabase';
 import { colors } from '../../../shared/theme/colors';
 import { spacing } from '../../../shared/theme/spacing';
@@ -16,11 +20,10 @@ export const GoogleSignInButton: React.FC = () => {
   const performOAuth = async () => {
     try {
       setLoading(true);
-      const redirectUri = AuthSession.makeRedirectUri({
-        scheme: 'm1',
-        path: 'auth/callback',
-      });
-      
+
+      const redirectUri = 'm1://auth/callback';
+      console.log('[OAuth] Starting OAuth with redirectUri:', redirectUri);
+
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -29,47 +32,24 @@ export const GoogleSignInButton: React.FC = () => {
         },
       });
 
-      if (error) throw error;
-
-      const res = await WebBrowser.openAuthSessionAsync(
-        data.url ?? '',
-        redirectUri
-      );
-
-      if (res.type === 'success' && res.url) {
-        const parsed = Linking.parse(res.url);
-        const code = parsed.queryParams?.code;
-        
-        if (typeof code === 'string') {
-          // Handle PKCE flow
-          const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-          if (exchangeError) throw exchangeError;
-        } else {
-          // Fallback for Implicit flow (tokens in the URL hash/fragment)
-          // Linking.parse might not include hash in queryParams
-          const hashMatch = res.url.match(/#(.*)/);
-          if (hashMatch) {
-            const hash = hashMatch[1];
-            const hashParams = new URLSearchParams(hash);
-            const accessToken = hashParams.get('access_token');
-            const refreshToken = hashParams.get('refresh_token');
-            
-            if (accessToken && refreshToken) {
-              const { error: sessionError } = await supabase.auth.setSession({
-                access_token: accessToken,
-                refresh_token: refreshToken,
-              });
-              if (sessionError) throw sessionError;
-            }
-          }
-        }
+      if (error) {
+        console.error('[OAuth] signInWithOAuth error:', error);
+        throw error;
       }
 
-      // Final check: if we somehow have a session now (e.g. from a background redirect),
-      // ensure it is properly registered by the client.
-      await supabase.auth.getSession();
+      console.log('[OAuth] Opening browser...');
+
+      // Open browser - RootNavigator handles the deep link callback
+      await WebBrowser.openBrowserAsync(data.url ?? '', {
+        showTitle: false,
+        toolbarColor: colors.primary,
+        enableBarCollapsing: false,
+      });
+
+      console.log('[OAuth] Browser closed');
+
     } catch (error) {
-      console.error('Google sign in error:', error);
+      console.error('[OAuth] performOAuth error:', error);
     } finally {
       setLoading(false);
     }
