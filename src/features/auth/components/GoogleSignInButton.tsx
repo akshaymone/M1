@@ -64,6 +64,10 @@ export const GoogleSignInButton: React.FC = () => {
           }
         }
       }
+
+      // Final check: if we somehow have a session now (e.g. from a background redirect),
+      // ensure it is properly registered by the client.
+      await supabase.auth.getSession();
     } catch (error) {
       console.error('Google sign in error:', error);
     } finally {

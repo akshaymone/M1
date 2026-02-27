@@ -8,18 +8,34 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing session on mount
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+    const initializeAuth = async () => {
+      try {
+        // Initial check for existing session from storage
+        const { data: { session: initialSession }, error } = await supabase.auth.getSession();
+        if (error) throw error;
+        
+        setSession(initialSession);
+        setUser(initialSession?.user ?? null);
+      } catch (error) {
+        console.error('Error fetching initial session:', error);
+      } finally {
+        // This is the critical part: ensure loading is false only after getSession
+        setLoading(false);
+      }
+    };
 
-    // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    initializeAuth();
+
+    // Listen for auth state changes (login, logout, token refresh)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
-      setLoading(false);
+      
+      // If we get a SIGNED_IN or SIGNED_OUT event, we should ensure loading is false
+      // This handles cases like manual session setting or logout.
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+        setLoading(false);
+      }
     });
 
     return () => {
