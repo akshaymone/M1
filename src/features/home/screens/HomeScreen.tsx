@@ -1,17 +1,27 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SafeLayout } from '../../../shared/components/SafeLayout';
 import { Button } from '../../../shared/components/Button';
 import { useAuth } from '../../auth/hooks/useAuth';
+import { AppStackParamList } from '../../../types';
 import { colors } from '../../../shared/theme/colors';
 import { spacing } from '../../../shared/theme/spacing';
 import { typography } from '../../../shared/theme/typography';
 
+type HomeScreenNavigationProp = NativeStackNavigationProp<AppStackParamList, 'Home'>;
+
 export const HomeScreen: React.FC = () => {
   const { user, signOut, loading } = useAuth();
+  const navigation = useNavigation<HomeScreenNavigationProp>();
 
   const handleSignOut = async () => {
     await signOut();
+  };
+
+  const handleOpenMap = () => {
+    navigation.navigate('Map', {});
   };
 
   return (
@@ -38,6 +48,11 @@ export const HomeScreen: React.FC = () => {
         </View>
 
         <View style={styles.footer}>
+          <Button
+            title="Open Map"
+            onPress={handleOpenMap}
+            style={styles.mapButton}
+          />
           <Button
             title="Log Out"
             onPress={handleSignOut}
@@ -88,5 +103,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingBottom: spacing.lg,
+  },
+  mapButton: {
+    marginBottom: spacing.md,
   },
 });
