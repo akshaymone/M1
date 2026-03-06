@@ -25,9 +25,9 @@
       }
     },
     "plugins": [
-      "@react-native-google-signin/google-signin",
       "expo-secure-store",
-      "expo-router"
+      "expo-router",
+      "expo-web-browser"
     ]
   }
 }
