@@ -22,6 +22,10 @@
       "eas": {
         "projectId": "5e3fb3d2-3524-4d2f-8823-68c517b5b51f"
       }
-    }
+    },
+    "plugins": [
+      "@react-native-google-signin/google-signin",
+      "expo-secure-store"
+    ]
   }
 }
