@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "914222557654",
+    "project_id": "m1corp",
+    "storage_bucket": "m1corp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914222557654:android:6534fc36a77f0de6ed5c77",
+        "android_client_info": {
+          "package_name": "com.akshaymone.m1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "914222557654-mseg724qoodm8iin0ah51pf61jr0q1hn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNdEe7l_ksY8gcrVEokynymiHhS_QbXQI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "914222557654-mseg724qoodm8iin0ah51pf61jr0q1hn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
