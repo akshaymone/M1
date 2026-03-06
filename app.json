@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "M1",
+    "slug": "M1",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "platforms": [
+      "android"
+    ],
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.akshaymone.m1"
+    },
+    "scheme": "m1",
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5e3fb3d2-3524-4d2f-8823-68c517b5b51f"
+      }
+    }
+  }
+}
