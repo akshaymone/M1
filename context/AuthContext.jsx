@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   // Using the Web Client ID for all platforms is usually best for Expo Go.
   const [request, response, promptAsync] = Google.useAuthRequest({
     webClientId: "914222557654-mseg724qoodm8iin0ah51pf61jr0q1hn.apps.googleusercontent.com",
-    // androidClientId: "YOUR_ANDROID_CLIENT_ID",
+    androidClientId: "914222557654-mseg724qoodm8iin0ah51pf61jr0q1hn.apps.googleusercontent.com",
     // iosClientId: "YOUR_IOS_CLIENT_ID",
   });
 
