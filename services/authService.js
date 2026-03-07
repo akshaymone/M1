@@ -5,7 +5,7 @@ import { auth } from '../firebaseConfig';
 
 // Use ANDROID client ID (not web client ID)
 // Get from google-services.json where client_type is 1
-const ANDROID_CLIENT_ID = "914222557654-8pqljd07acchcgjg8qqlv0ks4hvc022h.apps.googleusercontent.com";
+const ANDROID_CLIENT_ID = "914222557654-me8phsk0cdk4jkp4cn7895177e6pkggr.apps.googleusercontent.com";
 
 const redirectUri = 'http://localhost';
 
