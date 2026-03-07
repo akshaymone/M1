@@ -10,8 +10,8 @@ export async function signInWithGoogle() {
     await WebBrowser.warmUpAsync();
     
     const redirectUri = AuthSession.makeRedirectUri({ 
-      scheme: 'm1',
-      preferLocalhost: true,
+      scheme: 'com.akshaymone.m1',
+      path: 'redirect'
     });
     console.log('Redirect URI:', redirectUri);
 
