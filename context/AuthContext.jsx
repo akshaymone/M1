@@ -17,15 +17,12 @@ const discovery = {
   tokenEndpoint: 'https://oauth2.googleapis.com/token',
 };
 
+// Force https proxy URL - do NOT use makeRedirectUri
+const redirectUri = 'https://auth.expo.io/@akshaymone/M1';
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const redirectUri = AuthSession.makeRedirectUri({
-    scheme: 'm1',
-    useProxy: false,
-    native: 'com.akshaymone.m1:/'
-  });
 
   const [request, response, promptAsync] = AuthSession.useAuthRequest(
     {
@@ -55,7 +52,7 @@ export const AuthProvider = ({ children }) => {
       const credential = GoogleAuthProvider.credential(id_token);
       signInWithCredential(auth, credential)
         .then(result => setUser(result.user))
-        .catch(err => console.error(err));
+        .catch(err => console.error('Firebase error:', err));
     }
   }, [response]);
 
