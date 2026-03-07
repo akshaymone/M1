@@ -13,7 +13,14 @@
         "backgroundColor": "#ffffff",
         "googleServicesFile": "./google-services.json"
       },
-      "package": "com.akshaymone.m1"
+      "package": "com.akshaymone.m1",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [{ "scheme": "com.akshaymone.m1" }],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
     "scheme": "m1",
     "experiments": {

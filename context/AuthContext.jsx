@@ -2,24 +2,42 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
-import { makeRedirectUri } from 'expo-auth-session';
+import * as AuthSession from 'expo-auth-session';
+import * as Crypto from 'expo-crypto';
 import { logout as googleSignOut } from '../services/authService';
 
 WebBrowser.maybeCompleteAuthSession();
 
 const AuthContext = createContext();
 
+const GOOGLE_CLIENT_ID = "914222557654-mseg724qoodm8iin0ah51pf61jr0q1hn.apps.googleusercontent.com";
+
+const discovery = {
+  authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
+  tokenEndpoint: 'https://oauth2.googleapis.com/token',
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [request, response, promptAsync] = Google.useAuthRequest(
+  const redirectUri = AuthSession.makeRedirectUri({
+    scheme: 'm1',
+    useProxy: false,
+    native: 'com.akshaymone.m1:/'
+  });
+
+  const [request, response, promptAsync] = AuthSession.useAuthRequest(
     {
-      androidClientId: "914222557654-mseg724qoodm8iin0ah51pf61jr0q1hn.apps.googleusercontent.com",
-      webClientId: "914222557654-mseg724qoodm8iin0ah51pf61jr0q1hn.apps.googleusercontent.com",
+      clientId: GOOGLE_CLIENT_ID,
+      scopes: ['openid', 'profile', 'email'],
+      redirectUri,
+      responseType: 'id_token',
+      extraParams: {
+        nonce: Crypto.randomUUID(),
+      },
     },
-    { useProxy: true }
+    discovery
   );
 
   useEffect(() => {
@@ -35,7 +53,9 @@ export const AuthProvider = ({ children }) => {
     if (response?.type === 'success') {
       const { id_token } = response.params;
       const credential = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(auth, credential);
+      signInWithCredential(auth, credential)
+        .then(result => setUser(result.user))
+        .catch(err => console.error(err));
     }
   }, [response]);
 
