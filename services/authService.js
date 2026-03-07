@@ -13,6 +13,7 @@ export async function signInWithGoogle() {
       scheme: 'm1',
       preferLocalhost: true,
     });
+    console.log('Redirect URI:', redirectUri);
 
     const authUrl = 
       `https://accounts.google.com/o/oauth2/v2/auth?` +
@@ -21,6 +22,7 @@ export async function signInWithGoogle() {
       `&response_type=token` +
       `&scope=openid%20profile%20email` +
       `&prompt=select_account`;
+    console.log('Auth URL:', authUrl);
 
     const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUri);
     
