@@ -14,14 +14,13 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId: "914222557654-mseg724qoodm8iin0ah51pf61jr0q1hn.apps.googleusercontent.com",
-    webClientId: "914222557654-mseg724qoodm8iin0ah51pf61jr0q1hn.apps.googleusercontent.com",
-    redirectUri: makeRedirectUri({
-      scheme: 'https',
-      path: 'auth.expo.io/@akshaymone/M1'
-    })
-  });
+  const [request, response, promptAsync] = Google.useAuthRequest(
+    {
+      androidClientId: "914222557654-mseg724qoodm8iin0ah51pf61jr0q1hn.apps.googleusercontent.com",
+      webClientId: "914222557654-mseg724qoodm8iin0ah51pf61jr0q1hn.apps.googleusercontent.com",
+    },
+    { useProxy: true }
+  );
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
