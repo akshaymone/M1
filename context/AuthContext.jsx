@@ -29,10 +29,8 @@ export const AuthProvider = ({ children }) => {
       clientId: GOOGLE_CLIENT_ID,
       scopes: ['openid', 'profile', 'email'],
       redirectUri,
-      responseType: 'id_token',
-      extraParams: {
-        nonce: Crypto.randomUUID(),
-      },
+      responseType: AuthSession.ResponseType.Token,
+      usePKCE: false,
     },
     discovery
   );
@@ -48,8 +46,8 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (response?.type === 'success') {
-      const { id_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token);
+      const { access_token } = response.params;
+      const credential = GoogleAuthProvider.credential(null, access_token);
       signInWithCredential(auth, credential)
         .then(result => setUser(result.user))
         .catch(err => console.error('Firebase error:', err));
