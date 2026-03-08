@@ -1,45 +1,40 @@
-import * as WebBrowser from 'expo-web-browser';
-import * as AuthSession from 'expo-auth-session';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 
-// Use ANDROID client ID (not web client ID)
-// Get from google-services.json where client_type is 1
-const ANDROID_CLIENT_ID = "914222557654-me8phsk0cdk4jkp4cn7895177e6pkggr.apps.googleusercontent.com";
-
-const redirectUri = 'http://localhost';
+GoogleSignin.configure({
+  webClientId: '914222557654-mseg724qoodm8iin0ah51pf61jr0q1hn.apps.googleusercontent.com',
+  offlineAccess: true,
+});
 
 export async function signInWithGoogle() {
   try {
-    const authUrl = 
-      `https://accounts.google.com/o/oauth2/v2/auth?` +
-      `client_id=${ANDROID_CLIENT_ID}` +
-      `&redirect_uri=${encodeURIComponent(redirectUri)}` +
-      `&response_type=token` +
-      `&scope=openid%20profile%20email` +
-      `&prompt=select_account`;
-
-    const result = await WebBrowser.openAuthSessionAsync(
-      authUrl, 
-      redirectUri
-    );
-
-    if (result.type === 'success') {
-      const url = result.url;
-      const params = new URLSearchParams(url.split('#')[1]);
-      const access_token = params.get('access_token');
-      if (access_token) {
-        const credential = GoogleAuthProvider.credential(null, access_token);
-        const userCredential = await signInWithCredential(auth, credential);
-        return userCredential.user;
-      }
-    }
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    const response = await GoogleSignin.signIn();
+    const idToken = response.data?.idToken;
+    if (!idToken) throw new Error('No ID token returned');
+    const credential = GoogleAuthProvider.credential(idToken);
+    const result = await signInWithCredential(auth, credential);
+    return result.user;
   } catch (error) {
-    console.error('Sign-in error:', error);
+    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      throw new Error('Sign in cancelled');
+    } else if (error.code === statusCodes.IN_PROGRESS) {
+      throw new Error('Sign in already in progress');
+    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      throw new Error('Play services not available');
+    }
     throw error;
   }
 }
 
 export async function logout() {
-  await auth.signOut();
+  try {
+    await GoogleSignin.revokeAccess();
+    await GoogleSignin.signOut();
+    await auth.signOut();
+  } catch (error) {
+    console.error('Logout error:', error);
+    throw error;
+  }
 }

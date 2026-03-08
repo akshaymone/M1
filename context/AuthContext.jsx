@@ -1,54 +1,44 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
-import { signInWithGoogle as googleSignIn, logout as googleSignOut } from '../services/authService';
+import { signInWithGoogle, logout as logoutService } from '../services/authService';
 
-const AuthContext = createContext();
+const AuthContext = createContext({});
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
       setLoading(false);
     });
-
-    return () => unsubscribe();
+    return unsubscribe;
   }, []);
 
-  const signInWithGoogle = async () => {
-    setLoading(true);
+  const signIn = async () => {
     try {
-      const result = await googleSignIn();
-      return result;
+      await signInWithGoogle();
     } catch (error) {
-      console.error('AuthContext Sign-In Error:', error);
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
   const logout = async () => {
-    setLoading(true);
     try {
-      await googleSignOut();
+      await logoutService();
       setUser(null);
     } catch (error) {
-      console.error('AuthContext Logout Error:', error);
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInWithGoogle, logout }}>
+    <AuthContext.Provider value={{ user, loading, signInWithGoogle: signIn, logout }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
 export const useAuth = () => useContext(AuthContext);
