@@ -12,7 +12,8 @@ export default function LoginScreen() {
     setError(null);
     try {
       await signInWithGoogle();
-      console.log('[Login] signInWithGoogle completed, navigating to /home');
+      console.log('[Login] signInWithGoogle completed');
+      // NavigationGuard will handle redirect automatically
     } catch (err) {
       console.log('[Login] handleSignIn error:', err.message);
       setError(err.message || 'Something went wrong during sign in');

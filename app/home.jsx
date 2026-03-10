@@ -11,7 +11,7 @@ export default function HomeScreen() {
   const handleLogout = async () => {
     try {
       await logout();
-      router.replace('/login');
+      // NavigationGuard will handle redirect automatically
     } catch (err) {
       console.error('Logout error:', err);
     }
