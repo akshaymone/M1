@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import { signInWithGoogle, logout as logoutService } from '../services/authService';
+import { saveUserToFirestore } from '../services/userService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthContext = createContext({});
@@ -33,6 +34,9 @@ export function AuthProvider({ children }) {
       
       try {
         if (firebaseUser) {
+          // Save user to Firestore to update lastLoginAt and ensure metadata exists
+          await saveUserToFirestore(firebaseUser);
+
           await AsyncStorage.setItem('user_session', JSON.stringify({
             email: firebaseUser.email,
             displayName: firebaseUser.displayName,
@@ -68,6 +72,11 @@ export function AuthProvider({ children }) {
       const loggedInUser = await signInWithGoogle();
       console.log('[AuthContext] signInWithGoogle() returned:', loggedInUser?.email ?? 'null');
       
+      // Save/update user profile in Firestore
+      if (loggedInUser) {
+        await saveUserToFirestore(loggedInUser);
+      }
+
       // Manual state update for immediate reaction
       setUser(loggedInUser);
       

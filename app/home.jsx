@@ -1,12 +1,32 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'expo-router';
+import { getUsers } from '../services/userService';
 
 export default function HomeScreen() {
-  const { user, logout, loading } = useAuth();
-  console.log('[Home] Rendering, user:', user?.email ?? 'null');
+  const { user, logout, loading: authLoading } = useAuth();
+  const [users, setUsers] = useState([]);
+  const [fetchingUsers, setFetchingUsers] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    console.log('[Home] Rendering, user:', user?.email ?? 'null');
+    
+    if (user) {
+      const unsubscribe = getUsers((allUsers) => {
+        // Sort users: current user first, then others by lastLoginAt (descending)
+        const sortedUsers = [...allUsers].sort((a, b) => {
+          if (a.uid === user.uid) return -1;
+          if (b.uid === user.uid) return 1;
+          return new Date(b.lastLoginAt) - new Date(a.lastLoginAt);
+        });
+        setUsers(sortedUsers);
+        setFetchingUsers(false);
+      });
+      return () => unsubscribe();
+    }
+  }, [user]);
 
   const handleLogout = async () => {
     try {
@@ -17,7 +37,7 @@ export default function HomeScreen() {
     }
   };
 
-  if (!user) {
+  if (!user && authLoading) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#4285F4" />
@@ -25,9 +45,7 @@ export default function HomeScreen() {
     );
   }
 
-  const creationTime = user.metadata.creationTime 
-    ? new Date(user.metadata.creationTime).toLocaleDateString()
-    : 'N/A';
+  if (!user) return null;
 
   return (
     <View style={styles.container}>
@@ -40,29 +58,57 @@ export default function HomeScreen() {
         <Text style={styles.emailText}>{user.email}</Text>
       </View>
 
-      <View style={styles.card}>
-        <View style={styles.cardRow}>
-          <Text style={styles.cardLabel}>UID</Text>
-          <Text style={styles.cardValue} numberOfLines={1} ellipsizeMode="middle">{user.uid}</Text>
-        </View>
-        <View style={styles.cardSeparator} />
-        <View style={styles.cardRow}>
-          <Text style={styles.cardLabel}>Joined</Text>
-          <Text style={styles.cardValue}>{creationTime}</Text>
-        </View>
+      <View style={styles.content}>
+        <Text style={styles.statsText}>{users.length} users registered</Text>
+
+        {fetchingUsers ? (
+          <ActivityIndicator size="large" color="#4285F4" style={{ marginTop: 40 }} />
+        ) : (
+          <ScrollView horizontal showsHorizontalScrollIndicator={true} style={styles.tableScroll}>
+            <View style={styles.table}>
+              {/* Table Header */}
+              <View style={styles.tableHeader}>
+                <Text style={[styles.columnHeader, { width: 60 }]}>Avatar</Text>
+                <Text style={[styles.columnHeader, { width: 150 }]}>Name</Text>
+                <Text style={[styles.columnHeader, { width: 200 }]}>Email</Text>
+                <Text style={[styles.columnHeader, { width: 150 }]}>Last Login</Text>
+              </View>
+
+              {/* Table Body */}
+              <ScrollView style={styles.tableBodyScroll}>
+                {users.map((item, index) => {
+                  const isCurrentUser = item.uid === user.uid;
+                  const rowStyle = [
+                    styles.tableRow,
+                    index % 2 === 0 ? styles.rowEven : styles.rowOdd,
+                    isCurrentUser && styles.rowHighlight
+                  ];
+
+                  return (
+                    <View key={item.uid} style={rowStyle}>
+                      <View style={[styles.cell, { width: 60, alignItems: 'center' }]}>
+                        <Image source={{ uri: item.photoURL || 'https://via.placeholder.com/50' }} style={styles.smallAvatar} />
+                      </View>
+                      <Text style={[styles.cellText, { width: 150 }]} numberOfLines={1}>{item.displayName || 'N/A'}</Text>
+                      <Text style={[styles.cellText, { width: 200 }]} numberOfLines={1}>{item.email}</Text>
+                      <Text style={[styles.cellText, { width: 150 }]}>
+                        {new Date(item.lastLoginAt).toLocaleDateString()} {new Date(item.lastLoginAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </ScrollView>
+            </View>
+          </ScrollView>
+        )}
       </View>
 
       <View style={styles.footer}>
         <TouchableOpacity 
           style={styles.logoutButton} 
           onPress={handleLogout}
-          disabled={loading}
         >
-          {loading ? (
-            <ActivityIndicator color="white" />
-          ) : (
-            <Text style={styles.logoutButtonText}>Logout</Text>
-          )}
+          <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -73,62 +119,98 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0a0a0a',
-    padding: 20,
-    justifyContent: 'space-between',
+    padding: 15,
   },
   header: {
     alignItems: 'center',
-    marginTop: 60,
+    marginTop: 40,
+    marginBottom: 20,
   },
   avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 20,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginBottom: 10,
     borderWidth: 2,
     borderColor: '#4285F4',
   },
   welcomeText: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 5,
   },
   emailText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#888888',
   },
-  card: {
-    backgroundColor: '#1a1a1a',
-    borderRadius: 12,
-    padding: 20,
-    width: '100%',
+  content: {
+    flex: 1,
   },
-  cardRow: {
+  statsText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 10,
+  },
+  tableScroll: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#333',
+    borderRadius: 8,
+  },
+  table: {
+    minWidth: 560, // Total of columns widths
+  },
+  tableHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    backgroundColor: '#1a1a1a',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+  },
+  columnHeader: {
+    color: 'white',
+    fontWeight: 'bold',
+    paddingHorizontal: 10,
+    fontSize: 14,
+  },
+  tableBodyScroll: {
+    maxHeight: '100%',
+  },
+  tableRow: {
+    flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
   },
-  cardLabel: {
-    color: '#888888',
-    fontSize: 14,
+  rowEven: {
+    backgroundColor: '#0a0a0a',
   },
-  cardValue: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: '500',
-    flex: 1,
-    textAlign: 'right',
-    marginLeft: 10,
+  rowOdd: {
+    backgroundColor: '#111111',
   },
-  cardSeparator: {
-    height: 1,
-    backgroundColor: '#333',
-    marginVertical: 5,
+  rowHighlight: {
+    backgroundColor: '#4285F444', // Highlight with low opacity
+    borderLeftWidth: 4,
+    borderLeftColor: '#4285F4',
+  },
+  cell: {
+    paddingHorizontal: 10,
+  },
+  smallAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+  },
+  cellText: {
+    color: '#cccccc',
+    fontSize: 13,
+    paddingHorizontal: 10,
   },
   footer: {
-    marginBottom: 40,
+    marginTop: 20,
+    marginBottom: 20,
   },
   logoutButton: {
     backgroundColor: '#e53935',
