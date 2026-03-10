@@ -19,7 +19,8 @@ export function AuthProvider({ children }) {
 
   const signIn = async () => {
     try {
-      await signInWithGoogle();
+      const loggedInUser = await signInWithGoogle();
+      setUser(loggedInUser);
     } catch (error) {
       throw error;
     }
