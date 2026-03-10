@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 
 export default function Index() {
   const { user, loading } = useAuth();
+  console.log('[Index] Rendering, user:', user?.email ?? 'null', 'loading:', loading);
   const router = useRouter();
 
   useEffect(() => {

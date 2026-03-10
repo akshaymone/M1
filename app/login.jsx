@@ -4,13 +4,17 @@ import { useAuth } from '../context/AuthContext';
 
 export default function LoginScreen() {
   const { signInWithGoogle, loading } = useAuth();
+  console.log('[Login] Rendering');
   const [error, setError] = useState(null);
 
   const handleSignIn = async () => {
+    console.log('[Login] handleSignIn called');
     setError(null);
     try {
       await signInWithGoogle();
+      console.log('[Login] signInWithGoogle completed, navigating to /home');
     } catch (err) {
+      console.log('[Login] handleSignIn error:', err.message);
       setError(err.message || 'Something went wrong during sign in');
     }
   };

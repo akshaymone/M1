@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 
 export default function HomeScreen() {
   const { user, logout, loading } = useAuth();
+  console.log('[Home] Rendering, user:', user?.email ?? 'null');
   const router = useRouter();
 
   const handleLogout = async () => {
