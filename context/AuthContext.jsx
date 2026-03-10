@@ -49,7 +49,17 @@ export function AuthProvider({ children }) {
       setUser(firebaseUser);
       setLoading(false);
     });
-    return unsubscribe;
+
+    // Safety timeout: if Firebase takes too long to respond, 
+    // allow the app to at least try to render.
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => {
+      unsubscribe();
+      clearTimeout(timeout);
+    };
   }, []);
 
   const signIn = async () => {

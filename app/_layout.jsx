@@ -10,19 +10,24 @@ function NavigationGuard() {
   useEffect(() => {
     if (loading) return;
     
-    // segments[0] is the root folder name. expo-router 
-    // routes usually start with (tabs), login, etc.
+    // segments[0] is 'login' if we are at /login
+    // segments is [] if we are at / (index)
     const inAuthGroup = segments[0] === 'login';
     
     console.log('[NavigationGuard] user:', user?.email, 'segments:', segments, 'inAuthGroup:', inAuthGroup);
     
-    if (user && inAuthGroup) {
-      console.log('[NavigationGuard] User logged in, redirecting to /home');
-      router.replace('/home');
-    } else if (!user && !inAuthGroup && segments[0] !== undefined) {
-      // Avoid redirecting if segments is empty (during initial load)
-      console.log('[NavigationGuard] No user, redirecting to /login');
-      router.replace('/login');
+    if (!user) {
+      // If not logged in and not already in login screen, redirect to login
+      if (!inAuthGroup) {
+        console.log('[NavigationGuard] No user, redirecting to /login');
+        router.replace('/login');
+      }
+    } else {
+      // If logged in and at login screen (or root), redirect to home
+      if (inAuthGroup || segments.length === 0) {
+        console.log('[NavigationGuard] User logged in, redirecting to /home');
+        router.replace('/home');
+      }
     }
   }, [user, loading, segments]);
 
