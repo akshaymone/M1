@@ -5,74 +5,116 @@ import { useRouter } from 'expo-router';
 export default function HomeScreen() {
   const router = useRouter();
 
-  const users = [
-    { id: 1, name: 'Akshay Mone', email: 'mone.akshay@gmail.com', avatar: 'https://i.pravatar.cc/150?img=8', isMe: true },
-    { id: 2, name: 'Rahul Sharma', email: 'rahul.sharma@gmail.com', avatar: 'https://i.pravatar.cc/150?img=12', isMe: false },
-    { id: 3, name: 'Priya Patel', email: 'priya.patel@gmail.com', avatar: 'https://i.pravatar.cc/150?img=5', isMe: false },
+  const tasks = [
+    {
+      id: 1,
+      tree: 'Neem Tree - Pune Sector 4',
+      plantedBy: 'Rahul',
+      type: 'Water',
+      typeColor: '#2196F3',
+      reward: '25',
+      distance: '0.8 km',
+      due: '6:00 PM',
+      icon: '💧'
+    },
+    {
+      id: 2,
+      tree: 'Banyan Tree - Kothrud',
+      plantedBy: 'Priya',
+      type: 'Fertilize',
+      typeColor: '#9C27B0',
+      reward: '40',
+      distance: '1.2 km',
+      due: '4:30 PM',
+      icon: '🌿'
+    },
+    {
+      id: 3,
+      tree: 'Mango Tree - Baner',
+      plantedBy: 'Suresh',
+      type: 'Health Check',
+      typeColor: '#FF9800',
+      reward: '20',
+      distance: '2.5 km',
+      due: '8:00 PM',
+      icon: '🔍'
+    }
   ];
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Profile Section */}
-        <View style={styles.profileSection}>
-          <Image source={{ uri: 'https://i.pravatar.cc/150?img=8' }} style={styles.largeAvatar} />
-          <Text style={styles.welcomeText}>Welcome back,</Text>
-          <Text style={styles.profileName}>Akshay Mone</Text>
-          <Text style={styles.profileEmail}>mone.akshay@gmail.com</Text>
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View>
+            <Text style={styles.greetingText}>Good Morning,</Text>
+            <Text style={styles.userNameText}>Akshay 🌱</Text>
+          </View>
+          <Image source={{ uri: 'https://i.pravatar.cc/150?img=8' }} style={styles.avatar} />
         </View>
 
-        {/* Info Card */}
-        <View style={styles.infoCard}>
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Member Since</Text>
-            <Text style={styles.infoValue}>March 2024</Text>
+        {/* Stats Row */}
+        <View style={styles.statsRow}>
+          <View style={styles.statCard}>
+            <Text style={[styles.statNumber, { color: '#4caf50' }]}>12</Text>
+            <Text style={styles.statLabel}>Trees Planted</Text>
           </View>
-          <View style={styles.divider} />
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Account ID</Text>
-            <Text style={styles.infoValue}>#AX-00123</Text>
+          <View style={styles.statCard}>
+            <Text style={[styles.statNumber, { color: '#ffc107' }]}>₹450</Text>
+            <Text style={styles.statLabel}>Earned</Text>
+          </View>
+          <View style={styles.statCard}>
+            <Text style={[styles.statNumber, { color: '#2196f3' }]}>8</Text>
+            <Text style={styles.statLabel}>Tasks Done</Text>
           </View>
         </View>
 
-        {/* People Section */}
+        {/* Tasks Section */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>People</Text>
-          <Text style={styles.sectionCount}>3 users</Text>
+          <Text style={styles.sectionTitle}>Today's Tasks</Text>
+          <Text style={styles.pendingText}>3 pending</Text>
         </View>
 
-        <View style={styles.tableContainer}>
-          {users.map((user, index) => (
-            <React.Fragment key={user.id}>
-              <View style={[styles.userRow, user.isMe && styles.highlightedRow]}>
-                <Image source={{ uri: user.avatar }} style={styles.smallAvatar} />
-                <View style={styles.userInfo}>
-                  <Text style={[styles.userName, user.isMe && styles.boldText]}>{user.name}</Text>
-                  <Text style={styles.userEmail}>{user.email}</Text>
-                </View>
-                {user.isMe ? (
-                  <View style={styles.badge}>
-                    <Text style={styles.badgeText}>You</Text>
+        <View style={styles.tasksList}>
+          {tasks.map((task) => (
+            <View key={task.id} style={styles.taskCard}>
+              <View style={styles.taskTopRow}>
+                <View style={styles.treeInfo}>
+                  <Text style={styles.treeEmoji}>🌳</Text>
+                  <View>
+                    <Text style={styles.treeName}>{task.tree}</Text>
+                    <Text style={styles.plantedBy}>Planted by {task.plantedBy}</Text>
                   </View>
-                ) : (
-                  <TouchableOpacity style={styles.trackButton}>
-                    <Text style={styles.trackButtonText}>Track</Text>
-                  </TouchableOpacity>
-                )}
+                </View>
+                <View style={[styles.typeBadge, { backgroundColor: task.typeColor + '22' }]}>
+                  <Text style={[styles.typeBadgeText, { color: task.typeColor }]}>{task.icon} {task.type}</Text>
+                </View>
               </View>
-              {index < users.length - 1 && <View style={styles.rowDivider} />}
-            </React.Fragment>
+
+              <View style={styles.taskMiddleRow}>
+                <Text style={styles.rewardText}>₹{task.reward} reward</Text>
+                <TouchableOpacity style={styles.claimButton}>
+                  <Text style={styles.claimButtonText}>Claim</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.taskBottomRow}>
+                <Text style={styles.distanceText}>📍 {task.distance} away</Text>
+                <Text style={styles.dueText}>Due by {task.due}</Text>
+              </View>
+            </View>
           ))}
         </View>
-
-        {/* Logout Button */}
-        <TouchableOpacity 
-          style={styles.logoutButton} 
-          onPress={() => router.replace('/login')}
-        >
-          <Text style={styles.logoutButtonText}>Logout</Text>
-        </TouchableOpacity>
       </ScrollView>
+
+      {/* Floating Action Button */}
+      <TouchableOpacity 
+        style={styles.fab}
+        onPress={() => router.push('/plant')}
+        activeOpacity={0.8}
+      >
+        <Text style={styles.fabText}>+ Plant a Tree</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -83,143 +125,167 @@ const styles = StyleSheet.create({
     backgroundColor: '#0a0a0a',
   },
   scrollContent: {
-    paddingBottom: 40,
+    padding: 16,
+    paddingBottom: 100,
   },
-  profileSection: {
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 40,
     marginBottom: 24,
+    marginTop: 10,
   },
-  largeAvatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginBottom: 16,
-  },
-  welcomeText: {
+  greetingText: {
     color: '#888888',
-    fontSize: 14,
+    fontSize: 16,
   },
-  profileName: {
+  userNameText: {
     color: '#ffffff',
     fontSize: 24,
     fontWeight: 'bold',
   },
-  profileEmail: {
-    color: '#888888',
-    fontSize: 14,
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: '#2e7d32',
   },
-  infoCard: {
-    backgroundColor: '#1a1a1a',
-    marginHorizontal: 16,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 24,
-  },
-  infoRow: {
+  statsRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
+    gap: 12,
+    marginBottom: 32,
   },
-  infoLabel: {
+  statCard: {
+    flex: 1,
+    backgroundColor: '#1a1a1a',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statNumber: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  statLabel: {
     color: '#888888',
-  },
-  infoValue: {
-    color: '#ffffff',
-    fontWeight: '500',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#333333',
-    marginVertical: 4,
+    fontSize: 10,
+    textAlign: 'center',
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 16,
-    marginTop: 24,
-    marginBottom: 12,
+    marginBottom: 16,
   },
   sectionTitle: {
     color: '#ffffff',
     fontSize: 18,
     fontWeight: 'bold',
   },
-  sectionCount: {
-    color: '#888888',
+  pendingText: {
+    color: '#f57c00',
+    fontSize: 14,
+    fontWeight: '500',
   },
-  tableContainer: {
+  tasksList: {
+    gap: 12,
+  },
+  taskCard: {
     backgroundColor: '#1a1a1a',
-    marginHorizontal: 16,
     borderRadius: 12,
-    overflow: 'hidden',
+    padding: 16,
   },
-  userRow: {
+  taskTopRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 16,
   },
-  highlightedRow: {
-    backgroundColor: '#1a3a5c',
-  },
-  smallAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
-  userInfo: {
+  treeInfo: {
+    flexDirection: 'row',
+    gap: 12,
     flex: 1,
-    marginLeft: 12,
   },
-  userName: {
+  treeEmoji: {
+    fontSize: 24,
+  },
+  treeName: {
     color: '#ffffff',
-    fontSize: 16,
-  },
-  boldText: {
-    fontWeight: 'bold',
-  },
-  userEmail: {
-    color: '#888888',
-    fontSize: 12,
-  },
-  badge: {
-    backgroundColor: '#4285F4',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  badgeText: {
-    color: '#ffffff',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  trackButton: {
-    backgroundColor: '#4285F4',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 6,
-  },
-  trackButtonText: {
-    color: '#ffffff',
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: '600',
   },
-  rowDivider: {
-    height: 1,
-    backgroundColor: '#222222',
+  plantedBy: {
+    color: '#888888',
+    fontSize: 12,
   },
-  logoutButton: {
-    backgroundColor: '#e53935',
-    marginHorizontal: 16,
-    marginTop: 24,
-    paddingVertical: 16,
-    borderRadius: 10,
-    alignItems: 'center',
+  typeBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 20,
   },
-  logoutButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
+  typeBadgeText: {
+    fontSize: 12,
     fontWeight: 'bold',
+  },
+  taskMiddleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#222222',
+  },
+  rewardText: {
+    color: '#4caf50',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  claimButton: {
+    backgroundColor: '#2e7d32',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  claimButtonText: {
+    color: '#ffffff',
+    fontSize: 13,
+    fontWeight: 'bold',
+  },
+  taskBottomRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  distanceText: {
+    color: '#888888',
+    fontSize: 12,
+  },
+  dueText: {
+    color: '#f57c00',
+    fontSize: 12,
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 24,
+    right: 24,
+    backgroundColor: '#2e7d32',
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderRadius: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+  },
+  fabText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
