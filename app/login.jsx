@@ -1,0 +1,83 @@
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { useRouter } from 'expo-router';
+
+export default function LoginScreen() {
+  const router = useRouter();
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.inner}>
+        <Text style={styles.title}>M1</Text>
+        <Text style={styles.tagline}>Connect with people around you</Text>
+        
+        <View style={styles.spacer} />
+
+        <TouchableOpacity 
+          style={styles.button} 
+          onPress={() => router.replace('/home')}
+          activeOpacity={0.8}
+        >
+          <View style={styles.googleLogoContainer}>
+            <Text style={styles.googleG}>G</Text>
+          </View>
+          <Text style={styles.buttonText}>Sign in with Google</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#0a0a0a',
+  },
+  inner: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  title: {
+    color: '#ffffff',
+    fontSize: 72,
+    fontWeight: 'bold',
+    letterSpacing: 8,
+  },
+  tagline: {
+    color: '#888888',
+    fontSize: 16,
+    marginTop: 8,
+  },
+  spacer: {
+    height: 120,
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    width: '100%',
+    paddingVertical: 16,
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  googleLogoContainer: {
+    marginRight: 16,
+  },
+  googleG: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#4285F4', // Google Blue as a primary for the placeholder G
+  },
+  buttonText: {
+    color: '#0a0a0a',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+});
