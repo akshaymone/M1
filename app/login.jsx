@@ -1,42 +1,32 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
-import { useAuth } from '../context/AuthContext';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { useRouter } from 'expo-router';
 
 export default function LoginScreen() {
-  const { signInWithGoogle, loading } = useAuth();
-  console.log('[Login] Rendering');
-  const [error, setError] = useState(null);
+  const router = useRouter();
 
-  const handleSignIn = async () => {
-    console.log('[Login] handleSignIn called');
-    setError(null);
-    try {
-      await signInWithGoogle();
-      console.log('[Login] signInWithGoogle completed');
-      // NavigationGuard will handle redirect automatically
-    } catch (err) {
-      console.log('[Login] handleSignIn error:', err.message);
-      setError(err.message || 'Something went wrong during sign in');
-    }
+  const handleSignIn = () => {
+    // Navigate directly to home
+    router.replace('/home');
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.appName}>M1</Text>
-      <Text style={styles.subtitle}>Sign in to continue</Text>
-
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      <View style={styles.centerContent}>
+        <Text style={styles.logo}>M1</Text>
+        <Text style={styles.tagline}>Connect with people around you</Text>
+      </View>
 
       <TouchableOpacity 
         style={styles.googleButton} 
         onPress={handleSignIn}
-        disabled={loading}
+        activeOpacity={0.8}
       >
-        {loading ? (
-          <ActivityIndicator color="#000" />
-        ) : (
-          <Text style={styles.buttonText}>Sign in with Google</Text>
-        )}
+        <Image 
+          source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2991/2991148.png' }} 
+          style={styles.googleIcon} 
+        />
+        <Text style={styles.buttonText}>Sign in with Google</Text>
       </TouchableOpacity>
     </View>
   );
@@ -46,36 +36,49 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0a0a0a',
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    paddingVertical: 80,
+  },
+  centerContent: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
   },
-  appName: {
-    fontSize: 48,
+  logo: {
+    fontSize: 64,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 10,
+    letterSpacing: 2,
   },
-  subtitle: {
-    fontSize: 18,
+  tagline: {
+    fontSize: 16,
     color: '#888888',
-    marginBottom: 40,
-  },
-  errorText: {
-    color: '#e53935',
-    marginBottom: 20,
+    marginTop: 10,
+    textAlign: 'center',
   },
   googleButton: {
     backgroundColor: 'white',
-    width: '100%',
-    paddingVertical: 15,
-    borderRadius: 8,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: 16,
+    borderRadius: 12,
+    width: '100%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 8,
+  },
+  googleIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 12,
   },
   buttonText: {
     color: '#0a0a0a',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
   },
 });
