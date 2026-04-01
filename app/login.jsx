@@ -1,13 +1,21 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function LoginScreen() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const handleSignIn = () => {
-    // Navigate directly to home
-    router.replace('/home');
+    console.log('[MockLogin] Sign in button clicked');
+    setLoading(true);
+    
+    // Mock login process with a short delay
+    setTimeout(() => {
+      console.log('[MockLogin] Navigating to home');
+      setLoading(false);
+      router.replace('/home');
+    }, 1500);
   };
 
   return (
@@ -21,12 +29,19 @@ export default function LoginScreen() {
         style={styles.googleButton} 
         onPress={handleSignIn}
         activeOpacity={0.8}
+        disabled={loading}
       >
-        <Image 
-          source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2991/2991148.png' }} 
-          style={styles.googleIcon} 
-        />
-        <Text style={styles.buttonText}>Sign in with Google</Text>
+        {loading ? (
+          <ActivityIndicator color="#0a0a0a" />
+        ) : (
+          <>
+            <Image 
+              source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2991/2991148.png' }} 
+              style={styles.googleIcon} 
+            />
+            <Text style={styles.buttonText}>Sign in with Google</Text>
+          </>
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -70,6 +85,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 8,
+    minHeight: 56,
   },
   googleIcon: {
     width: 24,
