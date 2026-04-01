@@ -169,9 +169,15 @@ export default function PlantTreeScreen() {
           <Text style={styles.backBtnText}>Previous</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={[styles.nextButton, styles.plantBtn]} onPress={() => router.replace('/success')}>
+        <TouchableOpacity style={[styles.nextButton, styles.plantBtn]} onPress={() => router.replace('/review-request')}>
           <Text style={styles.buttonText}>Plant This Tree 🌱</Text>
         </TouchableOpacity>
+
+        <View style={styles.videoReviewInfo}>
+          <Text style={styles.videoReviewText}>
+            📹 After planting, a live video review will be initiated to verify and release your ₹100 reward
+          </Text>
+        </View>
       </View>
     );
   };
@@ -506,5 +512,16 @@ const styles = StyleSheet.create({
     marginTop: 0,
     paddingVertical: 20,
     elevation: 4,
+  },
+  videoReviewInfo: {
+    backgroundColor: '#1a1a1a',
+    borderRadius: 10,
+    padding: 12,
+    marginTop: 16,
+  },
+  videoReviewText: {
+    color: '#888888',
+    fontSize: 12,
+    textAlign: 'center',
   },
 });

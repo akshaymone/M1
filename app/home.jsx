@@ -7,6 +7,18 @@ export default function HomeScreen() {
 
   const tasks = [
     {
+      id: 4,
+      tree: 'New Tree - Pune Sector 4',
+      plantedBy: 'Suresh Kumar',
+      type: 'Review',
+      typeColor: '#1565c0',
+      reward: '25 reviewer reward',
+      distance: '1.2 km',
+      due: 'Now',
+      icon: '📹',
+      isReview: true
+    },
+    {
       id: 1,
       tree: 'Neem Tree - Pune Sector 4',
       plantedBy: 'Rahul',
@@ -69,10 +81,24 @@ export default function HomeScreen() {
           </View>
         </View>
 
+        {/* Reviewer Opt-in Toggle */}
+        <View style={styles.optInCard}>
+          <View style={styles.optInRow}>
+            <View style={styles.optInLeft}>
+              <Text style={styles.optInIcon}>📹</Text>
+              <Text style={styles.optInText}>Available as Reviewer</Text>
+            </View>
+            <View style={styles.toggleTrack}>
+              <View style={styles.toggleThumb} />
+            </View>
+          </View>
+          <Text style={styles.optInSubtext}>You will be notified when reviews are needed</Text>
+        </View>
+
         {/* Tasks Section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Today's Tasks</Text>
-          <Text style={styles.pendingText}>3 pending</Text>
+          <Text style={styles.pendingText}>4 pending</Text>
         </View>
 
         <View style={styles.tasksList}>
@@ -83,7 +109,9 @@ export default function HomeScreen() {
                   <Text style={styles.treeEmoji}>🌳</Text>
                   <View>
                     <Text style={styles.treeName}>{task.tree}</Text>
-                    <Text style={styles.plantedBy}>Planted by {task.plantedBy}</Text>
+                    <Text style={styles.plantedBy}>
+                      {task.isReview ? `${task.plantedBy} wants verification` : `Planted by ${task.plantedBy}`}
+                    </Text>
                   </View>
                 </View>
                 <View style={[styles.typeBadge, { backgroundColor: task.typeColor + '22' }]}>
@@ -92,15 +120,22 @@ export default function HomeScreen() {
               </View>
 
               <View style={styles.taskMiddleRow}>
-                <Text style={styles.rewardText}>₹{task.reward} reward</Text>
-                <TouchableOpacity style={styles.claimButton}>
-                  <Text style={styles.claimButtonText}>Claim</Text>
+                <Text style={[styles.rewardText, task.isReview && { color: '#4caf50' }]}>
+                  {task.isReview ? task.reward : `₹${task.reward} reward`}
+                </Text>
+                <TouchableOpacity 
+                  style={[styles.claimButton, task.isReview && { backgroundColor: '#1565c0' }]}
+                  onPress={() => task.isReview ? router.push('/reviewer-notification') : null}
+                >
+                  <Text style={styles.claimButtonText}>{task.isReview ? 'Accept Review' : 'Claim'}</Text>
                 </TouchableOpacity>
               </View>
 
               <View style={styles.taskBottomRow}>
                 <Text style={styles.distanceText}>📍 {task.distance} away</Text>
-                <Text style={styles.dueText}>Due by {task.due}</Text>
+                <Text style={[styles.dueText, task.isReview && { color: '#2196f3' }]}>
+                  {task.isReview ? 'Review Request' : `Due by ${task.due}`}
+                </Text>
               </View>
             </View>
           ))}
@@ -154,7 +189,7 @@ const styles = StyleSheet.create({
   statsRow: {
     flexDirection: 'row',
     gap: 12,
-    marginBottom: 32,
+    marginBottom: 24,
   },
   statCard: {
     flex: 1,
@@ -173,6 +208,50 @@ const styles = StyleSheet.create({
     color: '#888888',
     fontSize: 10,
     textAlign: 'center',
+  },
+  optInCard: {
+    backgroundColor: '#1a1a1a',
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 24,
+  },
+  optInRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  optInLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  optInIcon: {
+    fontSize: 18,
+  },
+  optInText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  toggleTrack: {
+    width: 40,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: '#2e7d32',
+    justifyContent: 'center',
+    paddingHorizontal: 2,
+    alignItems: 'flex-end',
+  },
+  toggleThumb: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#ffffff',
+  },
+  optInSubtext: {
+    color: '#888888',
+    fontSize: 10,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -242,7 +321,7 @@ const styles = StyleSheet.create({
   rewardText: {
     color: '#4caf50',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
   },
   claimButton: {
     backgroundColor: '#2e7d32',
@@ -289,3 +368,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
