@@ -5,10 +5,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function RootLayout() {
   return (
-    <View style={{ flex: 1 }}>
     <SafeAreaProvider>
-      <Slot />
-    </View>
+      <View style={{ flex: 1 }}>
+        <Slot />
+      </View>
     </SafeAreaProvider>
   );
 }
