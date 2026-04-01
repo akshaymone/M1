@@ -25,7 +25,7 @@ export default function VideoCallScreen() {
             <Text style={styles.liveText}>Live</Text>
           </View>
           <Text style={styles.timer}>02:34</Text>
-          <View style={{ width: 40 }} /> {/* Spacer to balance */}
+          <View style={{ width: 40 }} />
         </View>
       </View>
 
