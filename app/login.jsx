@@ -23,6 +23,22 @@ export default function LoginScreen() {
           </View>
           <Text style={styles.buttonText}>Sign in with Google</Text>
         </TouchableOpacity>
+
+        <View style={styles.dividerContainer}>
+          <View style={styles.divider} />
+          <Text style={styles.dividerText}>or</Text>
+          <View style={styles.divider} />
+        </View>
+
+        <TouchableOpacity 
+          style={styles.donorButton} 
+          onPress={() => router.replace('/donor-dashboard')}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.donorButtonText}>Login as Donor</Text>
+        </TouchableOpacity>
+        
+        <Text style={styles.donorSubtext}>For corporate donors and funding partners</Text>
       </View>
     </SafeAreaView>
   );
@@ -79,5 +95,40 @@ const styles = StyleSheet.create({
     color: '#0a0a0a',
     fontSize: 16,
     fontWeight: '600',
+  },
+  dividerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 24,
+    width: '100%',
+  },
+  divider: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#333333',
+  },
+  dividerText: {
+    color: '#888888',
+    paddingHorizontal: 16,
+    fontSize: 14,
+  },
+  donorButton: {
+    width: '100%',
+    paddingVertical: 16,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#2e7d32',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  donorButtonText: {
+    color: '#2e7d32',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  donorSubtext: {
+    color: '#888888',
+    fontSize: 12,
+    marginTop: 12,
   },
 });

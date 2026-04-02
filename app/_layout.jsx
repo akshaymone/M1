@@ -35,6 +35,13 @@ export default function RootLayout() {
           }}
         />
         <Tabs.Screen
+          name="wallet"
+          options={{
+            title: 'Wallet',
+            tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 20 }}>💰</Text>,
+          }}
+        />
+        <Tabs.Screen
           name="profile"
           options={{
             title: 'Profile',
@@ -59,6 +66,10 @@ export default function RootLayout() {
         <Tabs.Screen name="video-call" options={{ href: null }} />
         <Tabs.Screen name="success" options={{ href: null }} />
         <Tabs.Screen name="review-success" options={{ href: null }} />
+        <Tabs.Screen name="upi-setup" options={{ href: null }} />
+        <Tabs.Screen name="donor-dashboard" options={{ href: null }} />
+        <Tabs.Screen name="fund-mission" options={{ href: null }} />
+        <Tabs.Screen name="impact-report" options={{ href: null }} />
       </Tabs>
     </SafeAreaProvider>
   );

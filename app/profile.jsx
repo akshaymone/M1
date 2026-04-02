@@ -63,7 +63,10 @@ export default function ProfileScreen() {
               <Text style={styles.earningsStatLabel}>Pending</Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.withdrawBtn}>
+          <TouchableOpacity 
+            style={styles.withdrawBtn}
+            onPress={() => router.push('/wallet')}
+          >
             <Text style={styles.withdrawBtnText}>Withdraw Earnings</Text>
           </TouchableOpacity>
         </View>
