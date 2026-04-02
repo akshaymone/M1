@@ -40,8 +40,8 @@ export default function NotificationsScreen() {
     {
       id: 3,
       section: 'TODAY',
-      type: 'Task Available',
-      body: 'New watering task for Neem Tree - Sector 4. Reward: ₹25',
+      type: 'Task Assigned to You',
+      body: 'You have been assigned a watering task for Neem Tree - Sector 4. Reward: ₹25',
       time: '1 hour ago',
       icon: '✅',
       iconBg: '#f57c0022',
@@ -80,8 +80,8 @@ export default function NotificationsScreen() {
     {
       id: 6,
       section: 'YESTERDAY',
-      type: 'New Care Task',
-      body: 'Health check needed for Mango Tree - Baner. Reward: ₹20',
+      type: 'Task Assigned to You',
+      body: 'You were assigned a health check task for Mango Tree - Baner. Reward: ₹20',
       time: 'Yesterday 9:00 AM',
       icon: '📋',
       iconBg: '#1565c022',

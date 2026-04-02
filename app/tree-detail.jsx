@@ -84,9 +84,10 @@ export default function TreeDetailScreen() {
           </View>
         </View>
 
-        {/* Care History */}
+        {/* Completed Tasks History */}
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Care History</Text>
+          <Text style={styles.sectionTitle}>Completed Tasks History</Text>
+          <Text style={styles.sectionSubtitle}>All tasks were system generated and verified</Text>
           {history.map((item) => (
             <View key={item.id} style={[styles.historyItem, { borderLeftColor: item.color }]}>
               <View style={styles.historyLeft}>
@@ -116,13 +117,29 @@ export default function TreeDetailScreen() {
           </View>
         </View>
 
-        {/* Bottom Button */}
-        <TouchableOpacity 
-          style={styles.actionButton}
-          onPress={() => router.push('/gps-check')}
-        >
-          <Text style={styles.actionButtonText}>💧 Take Care of This Tree</Text>
-        </TouchableOpacity>
+        {/* Task Assignment Info Box / Pending Task Card */}
+        {/* Mocking a pending task state for demonstration */}
+        {true ? (
+          <View style={styles.pendingTaskCard}>
+            <Text style={styles.pendingTaskTitle}>You have a pending task for this tree!</Text>
+            <View style={styles.pendingTaskBadge}>
+              <Text style={styles.pendingTaskBadgeText}>💧 Water</Text>
+            </View>
+            <Text style={styles.pendingTaskSubtext}>Due by 6:00 PM • ₹25 reward</Text>
+            <TouchableOpacity 
+              style={styles.goToTaskBtn}
+              onPress={() => router.push('/home')}
+            >
+              <Text style={styles.goToTaskBtnText}>Go to Task</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.infoBox}>
+            <Text style={styles.infoBoxIcon}>📋</Text>
+            <Text style={styles.infoBoxTitle}>Tasks for this tree are automatically assigned by the system</Text>
+            <Text style={styles.infoBoxSubtext}>Check your Home screen for pending tasks</Text>
+          </View>
+        )}
         
         <View style={{ height: 20 }} />
       </ScrollView>
@@ -278,6 +295,12 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 16,
     fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  sectionSubtitle: {
+    color: '#888888',
+    fontSize: 12,
+    fontStyle: 'italic',
     marginBottom: 12,
   },
   historyItem: {
@@ -342,16 +365,71 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
   },
-  actionButton: {
-    backgroundColor: '#2e7d32',
-    marginHorizontal: 16,
+  infoBox: {
+    backgroundColor: '#1a1a1a',
+    margin: 16,
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',
   },
-  actionButtonText: {
+  infoBoxIcon: {
+    fontSize: 24,
+    color: '#888888',
+    marginBottom: 8,
+  },
+  infoBoxTitle: {
+    color: '#888888',
+    fontSize: 13,
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  infoBoxSubtext: {
+    color: '#666666',
+    fontSize: 11,
+    textAlign: 'center',
+  },
+  pendingTaskCard: {
+    backgroundColor: '#1b5e20',
+    margin: 16,
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  pendingTaskTitle: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  pendingTaskBadge: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+    marginBottom: 8,
+  },
+  pendingTaskBadgeText: {
+    color: '#ffffff',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  pendingTaskSubtext: {
+    color: 'rgba(255,255,255,0.7)',
+    fontSize: 12,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  goToTaskBtn: {
+    borderColor: '#ffffff',
+    borderWidth: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  goToTaskBtnText: {
+    color: '#ffffff',
+    fontSize: 13,
     fontWeight: 'bold',
   },
 });

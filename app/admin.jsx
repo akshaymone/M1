@@ -148,6 +148,40 @@ export default function AdminScreen() {
             </TouchableOpacity>
           </View>
         </View>
+
+        {/* Task Schedule Settings */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>⏱️ Task Schedule</Text>
+          <View style={styles.scheduleCard}>
+            <Text style={styles.scheduleInfo}>
+              The server automatically generates care tasks for each tree based on these intervals
+            </Text>
+            <View style={styles.rewardDivider} />
+            <View style={styles.rewardRow}>
+              <Text style={styles.rewardLabel}>💧 Watering interval</Text>
+              <Text style={styles.rewardValueWhite}>Every 2 days</Text>
+            </View>
+            <View style={styles.rewardDivider} />
+            <View style={styles.rewardRow}>
+              <Text style={styles.rewardLabel}>🌿 Fertilizing interval</Text>
+              <Text style={styles.rewardValueWhite}>Every 14 days</Text>
+            </View>
+            <View style={styles.rewardDivider} />
+            <View style={styles.rewardRow}>
+              <Text style={styles.rewardLabel}>🔍 Health Check interval</Text>
+              <Text style={styles.rewardValueWhite}>Every 7 days</Text>
+            </View>
+            <View style={styles.rewardDivider} />
+            <View style={styles.rewardRow}>
+              <Text style={styles.rewardLabel}>⏰ Task broadcast time</Text>
+              <Text style={styles.rewardValueWhite}>6:00 AM daily</Text>
+            </View>
+            <TouchableOpacity style={styles.editRewardsBtn}>
+              <Text style={styles.editRewardsBtnText}>Edit Schedule</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
         <View style={{ height: 40 }} />
       </ScrollView>
     </SafeAreaView>
@@ -364,9 +398,24 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
+  rewardValueWhite: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
   rewardDivider: {
     height: 1,
     backgroundColor: '#222222',
+  },
+  scheduleCard: {
+    backgroundColor: '#1a1a1a',
+    borderRadius: 12,
+    padding: 16,
+  },
+  scheduleInfo: {
+    color: '#888888',
+    fontSize: 12,
+    marginBottom: 12,
   },
   editRewardsBtn: {
     borderColor: '#2e7d32',

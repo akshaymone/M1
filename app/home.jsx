@@ -99,81 +99,90 @@ export default function HomeScreen() {
         {/* Tasks Section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Today's Tasks</Text>
-          <Text style={styles.pendingText}>4 pending</Text>
+          <Text style={styles.pendingText}>{tasks.length} pending</Text>
         </View>
+        <Text style={styles.autoAssignInfo}>Tasks are auto-assigned based on each tree's care schedule</Text>
 
         <View style={styles.tasksList}>
-          {tasks.map((task) => (
-            <View key={task.id} style={styles.taskCard}>
-              <View style={styles.taskTopRow}>
-                <TouchableOpacity 
-                  style={styles.treeInfo} 
-                  onPress={() => router.push('/tree-detail')}
-                >
-                  <Text style={styles.treeEmoji}>🌳</Text>
-                  <View>
-                    <Text style={styles.treeName}>{task.tree}</Text>
-                    <Text style={styles.plantedBy}>
-                      {task.isReview ? `${task.plantedBy} wants verification` : `Planted by ${task.plantedBy}`}
-                    </Text>
+          {tasks.length > 0 ? (
+            tasks.map((task) => (
+              <View key={task.id} style={styles.taskCard}>
+                <View style={styles.taskTopRow}>
+                  <TouchableOpacity 
+                    style={styles.treeInfo} 
+                    onPress={() => router.push('/tree-detail')}
+                  >
+                    <Text style={styles.treeEmoji}>🌳</Text>
+                    <View>
+                      <Text style={styles.treeName}>{task.tree}</Text>
+                      <Text style={styles.plantedBy}>
+                        {task.isReview ? `${task.plantedBy} wants verification` : `Planted by ${task.plantedBy}`}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <View style={[styles.typeBadge, { backgroundColor: task.typeColor + '22' }]}>
+                    <Text style={[styles.typeBadgeText, { color: task.typeColor }]}>{task.icon} {task.type}</Text>
                   </View>
-                </TouchableOpacity>
-                <View style={[styles.typeBadge, { backgroundColor: task.typeColor + '22' }]}>
-                  <Text style={[styles.typeBadgeText, { color: task.typeColor }]}>{task.icon} {task.type}</Text>
                 </View>
-              </View>
 
-              <View style={styles.taskMiddleRow}>
-                <Text style={[styles.rewardText, task.isReview && { color: '#4caf50' }]}>
-                  {task.isReview ? task.reward : `₹${task.reward} reward`}
-                </Text>
-                <TouchableOpacity 
-                  style={[styles.claimButton, task.isReview && { backgroundColor: '#1565c0' }]}
-                  onPress={() => {
-                    if (task.isReview) {
-                      router.push('/reviewer-notification');
-                    } else {
-                      setExpandedTaskId(expandedTaskId === task.id ? null : task.id);
-                    }
-                  }}
-                >
-                  <Text style={styles.claimButtonText}>
-                    {task.isReview ? 'Accept Review' : (expandedTaskId === task.id ? 'Close' : 'Claim')}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-
-              {expandedTaskId === task.id && !task.isReview && (
-                <View style={styles.gpsRequirementCard}>
-                  <Text style={styles.gpsRequirementTitle}>📍 GPS Check Required</Text>
-                  <Text style={styles.gpsRequirementSubtext}>
-                    You must be within 50m of the tree to claim this task
+                <View style={styles.taskMiddleRow}>
+                  <Text style={[styles.rewardText, task.isReview && { color: '#4caf50' }]}>
+                    {task.isReview ? task.reward : `₹${task.reward} reward`}
                   </Text>
                   <TouchableOpacity 
-                    style={styles.checkLocationButton}
-                    onPress={() => router.push('/gps-check')}
+                    style={[styles.claimButton, task.isReview && { backgroundColor: '#1565c0' }]}
+                    onPress={() => {
+                      if (task.isReview) {
+                        router.push('/reviewer-notification');
+                      } else {
+                        setExpandedTaskId(expandedTaskId === task.id ? null : task.id);
+                      }
+                    }}
                   >
-                    <Text style={styles.checkLocationButtonText}>Check My Location</Text>
+                    <Text style={styles.claimButtonText}>
+                      {task.isReview ? 'Accept Review' : (expandedTaskId === task.id ? 'Close' : 'Claim')}
+                    </Text>
                   </TouchableOpacity>
                 </View>
-              )}
 
-              <View style={styles.taskBottomRow}>
-                <View style={styles.bottomLeft}>
-                  <Text style={styles.distanceText}>📍 {task.distance} away</Text>
-                  {!task.isReview && (
-                    <View style={styles.gpsStatusIndicator}>
-                      <View style={styles.orangeDot} />
-                      <Text style={styles.gpsStatusLabel}>GPS pending</Text>
-                    </View>
-                  )}
+                {expandedTaskId === task.id && !task.isReview && (
+                  <View style={styles.gpsRequirementCard}>
+                    <Text style={styles.gpsRequirementTitle}>📍 GPS Check Required</Text>
+                    <Text style={styles.gpsRequirementSubtext}>
+                      You must be within 50m of the tree to claim this task
+                    </Text>
+                    <TouchableOpacity 
+                      style={styles.checkLocationButton}
+                      onPress={() => router.push('/gps-check')}
+                    >
+                      <Text style={styles.checkLocationButtonText}>Check My Location</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+
+                <View style={styles.taskBottomRow}>
+                  <View style={styles.bottomLeft}>
+                    <Text style={styles.distanceText}>📍 {task.distance} away</Text>
+                    {!task.isReview && (
+                      <View style={styles.gpsStatusIndicator}>
+                        <View style={styles.orangeDot} />
+                        <Text style={styles.gpsStatusLabel}>GPS pending</Text>
+                      </View>
+                    )}
+                  </View>
+                  <Text style={[styles.dueText, task.isReview && { color: '#2196f3' }]}>
+                    {task.isReview ? 'Review Request' : `Due by ${task.due}`}
+                  </Text>
                 </View>
-                <Text style={[styles.dueText, task.isReview && { color: '#2196f3' }]}>
-                  {task.isReview ? 'Review Request' : `Due by ${task.due}`}
-                </Text>
               </View>
+            ))
+          ) : (
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyEmoji}>📋</Text>
+              <Text style={styles.emptyTitle}>No tasks assigned for today</Text>
+              <Text style={styles.emptySubtext}>Check back later, tasks are generated automatically</Text>
             </View>
-          ))}
+          )}
         </View>
       </ScrollView>
 
@@ -299,6 +308,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  autoAssignInfo: {
+    color: '#888888',
+    fontSize: 12,
+    fontStyle: 'italic',
+    marginBottom: 12,
+  },
   pendingText: {
     color: '#f57c00',
     fontSize: 14,
@@ -306,6 +321,28 @@ const styles = StyleSheet.create({
   },
   tasksList: {
     gap: 12,
+  },
+  emptyState: {
+    backgroundColor: '#1a1a1a',
+    borderRadius: 12,
+    padding: 32,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  emptyEmoji: {
+    fontSize: 48,
+    marginBottom: 16,
+  },
+  emptyTitle: {
+    color: '#888888',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  emptySubtext: {
+    color: '#666666',
+    fontSize: 13,
+    textAlign: 'center',
   },
   taskCard: {
     backgroundColor: '#1a1a1a',
