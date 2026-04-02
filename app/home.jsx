@@ -106,7 +106,10 @@ export default function HomeScreen() {
           {tasks.map((task) => (
             <View key={task.id} style={styles.taskCard}>
               <View style={styles.taskTopRow}>
-                <View style={styles.treeInfo}>
+                <TouchableOpacity 
+                  style={styles.treeInfo} 
+                  onPress={() => router.push('/tree-detail')}
+                >
                   <Text style={styles.treeEmoji}>🌳</Text>
                   <View>
                     <Text style={styles.treeName}>{task.tree}</Text>
@@ -114,7 +117,7 @@ export default function HomeScreen() {
                       {task.isReview ? `${task.plantedBy} wants verification` : `Planted by ${task.plantedBy}`}
                     </Text>
                   </View>
-                </View>
+                </TouchableOpacity>
                 <View style={[styles.typeBadge, { backgroundColor: task.typeColor + '22' }]}>
                   <Text style={[styles.typeBadgeText, { color: task.typeColor }]}>{task.icon} {task.type}</Text>
                 </View>
