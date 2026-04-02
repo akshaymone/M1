@@ -223,6 +223,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  logoutButton: {
+    padding: 8,
+  },
+  logoutIcon: {
+    fontSize: 20,
+  },
   avatar: {
     width: 50,
     height: 50,
@@ -491,6 +502,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
   },
+  fabText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+});
+
+,
   fabText: {
     color: '#ffffff',
     fontWeight: 'bold',
