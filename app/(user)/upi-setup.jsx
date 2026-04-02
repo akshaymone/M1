@@ -91,7 +91,7 @@ export default function UPISetupScreen() {
               
               <TouchableOpacity 
                 style={styles.saveButton}
-                onPress={() => router.replace('/wallet')}
+                onPress={() => router.replace('/(user)/wallet')}
               >
                 <Text style={styles.saveButtonText}>Save & Continue</Text>
               </TouchableOpacity>

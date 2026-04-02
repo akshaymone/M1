@@ -116,7 +116,8 @@ export default function VideoCallScreen() {
           <View style={styles.actionRow}>
             <TouchableOpacity 
               style={[styles.approveButton, !gpsVerified && styles.disabledButton]}
-              onPress={() => gpsVerified ? router.push('/review-success') : null}
+              onPress={() => gpsVerified ? router.push('/(user)/review-success') : null}
+
               disabled={!gpsVerified}
             >
               <Text style={styles.buttonText}>✅ Approve</Text>

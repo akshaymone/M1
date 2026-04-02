@@ -120,7 +120,7 @@ export default function GPSCheckScreen() {
         <TouchableOpacity 
           style={[styles.proceedButton, !isVerified && { opacity: 0.5 }]}
           disabled={!isVerified}
-          onPress={() => router.push('/review-request')}
+          onPress={() => router.push('/(user)/review-request')}
         >
           <Text style={styles.proceedButtonText}>Proceed to Review</Text>
         </TouchableOpacity>

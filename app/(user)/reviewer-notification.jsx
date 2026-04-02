@@ -88,7 +88,8 @@ export default function ReviewerNotificationScreen() {
         <View style={styles.buttonContainer}>
           <TouchableOpacity 
             style={styles.acceptButton}
-            onPress={() => router.push('/video-call')}
+            onPress={() => router.push('/(user)/video-call')}
+
           >
             <Text style={styles.acceptButtonText}>Accept Review</Text>
           </TouchableOpacity>

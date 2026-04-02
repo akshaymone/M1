@@ -128,7 +128,8 @@ export default function TreeDetailScreen() {
             <Text style={styles.pendingTaskSubtext}>Due by 6:00 PM • ₹25 reward</Text>
             <TouchableOpacity 
               style={styles.goToTaskBtn}
-              onPress={() => router.push('/home')}
+              onPress={() => router.push('/(user)/home')}
+
             >
               <Text style={styles.goToTaskBtnText}>Go to Task</Text>
             </TouchableOpacity>

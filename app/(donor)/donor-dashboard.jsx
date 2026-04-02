@@ -138,7 +138,7 @@ export default function DonorDashboardScreen() {
               <Text style={styles.missionFooterStats}>23 active users • 456 tasks done</Text>
               <TouchableOpacity 
                 style={styles.detailsButton}
-                onPress={() => router.push('/impact-report')}
+                onPress={() => router.push('/(donor)/impact-report')}
               >
                 <Text style={styles.detailsButtonText}>View Details</Text>
               </TouchableOpacity>
@@ -197,7 +197,7 @@ export default function DonorDashboardScreen() {
         {/* Fund More Button */}
         <TouchableOpacity 
           style={styles.fundButton}
-          onPress={() => router.push('/fund-mission')}
+          onPress={() => router.push('/(donor)/fund-mission')}
         >
           <Text style={styles.fundButtonText}>💰 Add More Funds</Text>
         </TouchableOpacity>

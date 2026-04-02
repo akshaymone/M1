@@ -64,14 +64,16 @@ export default function ReviewSuccessScreen() {
         <View style={styles.buttonContainer}>
           <TouchableOpacity 
             style={styles.mapButton}
-            onPress={() => router.push('/home')}
+            onPress={() => router.push('/(user)/home')}
+
           >
             <Text style={styles.mapButtonText}>View Tree on Map</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
             style={styles.homeButton}
-            onPress={() => router.push('/home')}
+            onPress={() => router.push('/(user)/home')}
+
           >
             <Text style={styles.homeButtonText}>Back to Home</Text>
           </TouchableOpacity>

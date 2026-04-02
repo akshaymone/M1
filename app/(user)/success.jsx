@@ -35,14 +35,16 @@ export default function SuccessScreen() {
           <View style={styles.footer}>
             <TouchableOpacity 
               style={styles.outlineButton}
-              onPress={() => router.replace('/home')}
+              onPress={() => router.replace('/(user)/home')}
+
             >
               <Text style={styles.outlineButtonText}>View on Map</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
               style={styles.filledButton}
-              onPress={() => router.replace('/home')}
+              onPress={() => router.replace('/(user)/home')}
+
             >
               <Text style={styles.filledButtonText}>Back to Home</Text>
             </TouchableOpacity>

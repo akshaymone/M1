@@ -35,7 +35,7 @@ export default function NotificationsScreen() {
       borderColor: '#1565c0',
       reward: '₹25 reward',
       category: 'Reviews',
-      link: '/reviewer-notification'
+      link: '/(user)/reviewer-notification'
     },
     {
       id: 3,
@@ -49,7 +49,7 @@ export default function NotificationsScreen() {
       unread: true,
       borderColor: '#f57c00',
       category: 'Tasks',
-      link: '/home'
+      link: '/(user)/home'
     },
     {
       id: 4,
@@ -89,7 +89,7 @@ export default function NotificationsScreen() {
       unread: false,
       borderColor: '#1565c0',
       category: 'Tasks',
-      link: '/home'
+      link: '/(user)/home'
     },
     {
       id: 7,

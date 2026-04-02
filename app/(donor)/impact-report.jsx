@@ -220,26 +220,6 @@ export default function ImpactReportScreen() {
         
         <View style={{ height: 100 }} />
       </ScrollView>
-
-      {/* Donor Tabs */}
-      <View style={styles.tabBar}>
-        <TouchableOpacity style={styles.tabItem} onPress={() => router.push('/donor-dashboard')}>
-          <Text style={styles.tabIcon}>🏠</Text>
-          <Text style={styles.tabLabel}>Dashboard</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem} onPress={() => router.push('/fund-mission')}>
-          <Text style={styles.tabIcon}>🌍</Text>
-          <Text style={styles.tabLabel}>Fund Mission</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem}>
-          <Text style={[styles.tabIcon, { color: '#2e7d32' }]}>📊</Text>
-          <Text style={[styles.tabLabel, { color: '#2e7d32' }]}>Impact</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem} onPress={() => router.push('/profile')}>
-          <Text style={styles.tabIcon}>👤</Text>
-          <Text style={styles.tabLabel}>Profile</Text>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 }

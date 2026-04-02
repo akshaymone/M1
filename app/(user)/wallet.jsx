@@ -79,7 +79,7 @@ export default function WalletScreen() {
               <Text style={styles.upiId}>akshay@okicici</Text>
               <Text style={styles.upiStatus}>Verified ✅</Text>
             </View>
-            <TouchableOpacity onPress={() => router.push('/upi-setup')}>
+            <TouchableOpacity onPress={() => router.push('/(user)/upi-setup')}>
               <Text style={styles.changeText}>Change</Text>
             </TouchableOpacity>
           </View>

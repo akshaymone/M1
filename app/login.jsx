@@ -15,7 +15,7 @@ export default function LoginScreen() {
 
         <TouchableOpacity 
           style={styles.button} 
-          onPress={() => router.replace('/home')}
+          onPress={() => router.replace('/(user)/home')}
           activeOpacity={0.8}
         >
           <View style={styles.googleLogoContainer}>
@@ -32,7 +32,7 @@ export default function LoginScreen() {
 
         <TouchableOpacity 
           style={styles.donorButton} 
-          onPress={() => router.replace('/donor-dashboard')}
+          onPress={() => router.replace('/(donor)/donor-dashboard')}
           activeOpacity={0.8}
         >
           <Text style={styles.donorButtonText}>Login as Donor</Text>

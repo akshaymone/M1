@@ -110,7 +110,7 @@ export default function HomeScreen() {
                 <View style={styles.taskTopRow}>
                   <TouchableOpacity 
                     style={styles.treeInfo} 
-                    onPress={() => router.push('/tree-detail')}
+                    onPress={() => router.push('/(user)/tree-detail')}
                   >
                     <Text style={styles.treeEmoji}>🌳</Text>
                     <View>
@@ -133,7 +133,7 @@ export default function HomeScreen() {
                     style={[styles.claimButton, task.isReview && { backgroundColor: '#1565c0' }]}
                     onPress={() => {
                       if (task.isReview) {
-                        router.push('/reviewer-notification');
+                        router.push('/(user)/reviewer-notification');
                       } else {
                         setExpandedTaskId(expandedTaskId === task.id ? null : task.id);
                       }
@@ -153,7 +153,7 @@ export default function HomeScreen() {
                     </Text>
                     <TouchableOpacity 
                       style={styles.checkLocationButton}
-                      onPress={() => router.push('/gps-check')}
+                      onPress={() => router.push('/(user)/gps-check')}
                     >
                       <Text style={styles.checkLocationButtonText}>Check My Location</Text>
                     </TouchableOpacity>
@@ -189,7 +189,7 @@ export default function HomeScreen() {
       {/* Floating Action Button */}
       <TouchableOpacity 
         style={styles.fab}
-        onPress={() => router.push('/plant')}
+        onPress={() => router.push('/(user)/plant')}
         activeOpacity={0.8}
       >
         <Text style={styles.fabText}>+ Plant a Tree</Text>

@@ -169,7 +169,7 @@ export default function PlantTreeScreen() {
           <Text style={styles.backBtnText}>Previous</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={[styles.nextButton, styles.plantBtn]} onPress={() => router.replace('/review-request')}>
+        <TouchableOpacity style={[styles.nextButton, styles.plantBtn]} onPress={() => router.replace('/(user)/review-request')}>
           <Text style={styles.buttonText}>Plant This Tree 🌱</Text>
         </TouchableOpacity>
 
