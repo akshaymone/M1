@@ -56,6 +56,23 @@ export default function TreeDetailScreen() {
           <View style={styles.infoRow}>
             <Text style={styles.ageText}>🌱 Sapling - 18 days old</Text>
           </View>
+          <View style={[styles.infoRow, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 }]}>
+            <Text style={styles.infoText}>🏛️ Protected by</Text>
+            <Text style={[styles.infoValue, { color: '#1565c0', fontWeight: 'bold' }]}>Rajesh Patil • Ward 15</Text>
+          </View>
+
+          <View style={styles.protectorInfoBox}>
+            <Image 
+              source={{ uri: 'https://i.pravatar.cc/150?img=33' }} 
+              style={styles.smallAvatar} 
+            />
+            <View style={{ flex: 1, marginLeft: 8 }}>
+              <Text style={styles.protectorBio}>
+                Rajesh Patil is the elected Ward 15 representative responsible for protecting trees in this area.
+              </Text>
+              <Text style={styles.protectorParty}>BJP • Aundh, Pune</Text>
+            </View>
+          </View>
           
           <View style={styles.healthContainer}>
             <View style={styles.healthLabelRow}>
@@ -95,6 +112,7 @@ export default function TreeDetailScreen() {
                 <View>
                   <Text style={styles.historyType}>{item.type}</Text>
                   <Text style={styles.historyPerson}>by {item.person}</Text>
+                  <Text style={styles.historyCommission}>Commission: ₹0.13 → Rajesh Patil</Text>
                 </View>
               </View>
               <View style={styles.historyRight}>
@@ -238,6 +256,32 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
+  infoValue: {
+    fontSize: 14,
+  },
+  protectorInfoBox: {
+    backgroundColor: '#1a3a5c',
+    borderRadius: 8,
+    padding: 10,
+    marginTop: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  smallAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+  },
+  protectorBio: {
+    color: '#ffffff',
+    fontSize: 10,
+    lineHeight: 14,
+  },
+  protectorParty: {
+    color: 'rgba(255,255,255,0.6)',
+    fontSize: 9,
+    marginTop: 2,
+  },
   healthContainer: {
     marginTop: 16,
   },
@@ -329,6 +373,12 @@ const styles = StyleSheet.create({
   historyPerson: {
     color: '#888888',
     fontSize: 12,
+  },
+  historyCommission: {
+    color: '#888888',
+    fontSize: 10,
+    fontStyle: 'italic',
+    marginTop: 2,
   },
   historyRight: {
     alignItems: 'flex-end',

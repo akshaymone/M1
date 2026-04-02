@@ -18,6 +18,9 @@ export default function SuccessScreen() {
           <View style={styles.rewardCard}>
             <Text style={styles.rewardTitle}>₹100 credited to your wallet 🎉</Text>
             <Text style={styles.rewardSubtitle}>Keep planting to earn more rewards!</Text>
+            <Text style={styles.protectionNote}>
+              🏛️ Your tree is now under protection of Rajesh Patil, Ward 15 Representative
+            </Text>
           </View>
 
           <View style={styles.statsContainer}>
@@ -107,6 +110,14 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.7)',
     fontSize: 14,
     textAlign: 'center',
+  },
+  protectionNote: {
+    color: '#ffffff',
+    fontSize: 12,
+    textAlign: 'center',
+    fontStyle: 'italic',
+    marginTop: 12,
+    opacity: 0.9,
   },
   statsContainer: {
     flexDirection: 'row',

@@ -118,6 +118,7 @@ export default function HomeScreen() {
                       <Text style={styles.plantedBy}>
                         {task.isReview ? `${task.plantedBy} wants verification` : `Planted by ${task.plantedBy}`}
                       </Text>
+                      <Text style={styles.protectorText}>🏛️ Protected by Rajesh Patil</Text>
                     </View>
                   </TouchableOpacity>
                   <View style={[styles.typeBadge, { backgroundColor: task.typeColor + '22' }]}>
@@ -371,6 +372,12 @@ const styles = StyleSheet.create({
   plantedBy: {
     color: '#888888',
     fontSize: 12,
+  },
+  protectorText: {
+    color: '#1565c0',
+    fontSize: 10,
+    fontStyle: 'italic',
+    marginTop: 2,
   },
   typeBadge: {
     paddingHorizontal: 10,

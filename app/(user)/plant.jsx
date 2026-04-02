@@ -56,6 +56,7 @@ export default function PlantTreeScreen() {
           <View style={styles.locationInfo}>
             <Text style={styles.locationName}>{loc.name}</Text>
             <Text style={styles.locationDistance}>{loc.distance}</Text>
+            <Text style={styles.protectorInfo}>🏛️ Protected by Rajesh Patil • Ward 15</Text>
             <Text style={styles.locationSpots}>{loc.spots}</Text>
           </View>
           <View style={[styles.radioButton, selectedLocation === loc.id && styles.radioActive]}>
@@ -336,6 +337,11 @@ const styles = StyleSheet.create({
   locationDistance: {
     color: '#888',
     fontSize: 12,
+  },
+  protectorInfo: {
+    color: '#1565c0',
+    fontSize: 11,
+    marginTop: 2,
   },
   locationSpots: {
     color: '#2e7d32',
