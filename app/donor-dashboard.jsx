@@ -14,10 +14,42 @@ export default function DonorDashboardScreen() {
   ];
 
   const activities = [
-    { id: 1, type: 'water', dot: '#4caf50', text: 'Rahul Sharma watered a Neem tree', subtext: 'Pune Sector 4 • 5 min ago', reward: '₹25 paid from your fund', pulse: true },
-    { id: 2, type: 'plant', dot: '#4caf50', text: 'New tree planted by Priya Patel', subtext: 'Kothrud Hills • 23 min ago', reward: '₹100 paid from your fund' },
-    { id: 3, type: 'review', dot: '#2196f3', text: 'Video review completed', subtext: 'Banyan tree verified • 1 hour ago', reward: '₹25 reviewer reward paid' },
-    { id: 4, type: 'health', dot: '#4caf50', text: 'Health check completed', subtext: 'Mango tree - Baner • 2 hours ago', reward: '₹20 paid from your fund' },
+    { 
+      id: 1, 
+      icon: '🌱', 
+      iconBg: '#2e7d32', 
+      borderColor: '#2e7d32',
+      text: 'Rahul Sharma watered a Neem tree', 
+      subtext: 'Pune Sector 4 • 5 min ago', 
+      reward: '₹25 paid from your fund' 
+    },
+    { 
+      id: 2, 
+      icon: '🌳', 
+      iconBg: '#2e7d32', 
+      borderColor: '#2e7d32',
+      text: 'New tree planted by Priya Patel', 
+      subtext: 'Kothrud Hills • 23 min ago', 
+      reward: '₹100 paid from your fund' 
+    },
+    { 
+      id: 3, 
+      icon: '📹', 
+      iconBg: '#1565c0', 
+      borderColor: '#1565c0',
+      text: 'Video review completed', 
+      subtext: 'Banyan tree verified • 1 hour ago', 
+      reward: '₹25 reviewer reward paid' 
+    },
+    { 
+      id: 4, 
+      icon: '🔍', 
+      iconBg: '#2e7d32', 
+      borderColor: '#2e7d32',
+      text: 'Health check completed', 
+      subtext: 'Mango tree - Baner • 2 hours ago', 
+      reward: '₹20 paid from your fund' 
+    },
   ];
 
   return (
@@ -28,11 +60,9 @@ export default function DonorDashboardScreen() {
       <View style={styles.header}>
         <View>
           <Text style={styles.headerTitle}>M1Corp Donor Portal</Text>
-          <View style={styles.headerSubtitleRow}>
-            <Text style={styles.headerSubtitle}>Welcome, Tata Foundation 🌱</Text>
-            <View style={styles.verifiedBadge}>
-              <Text style={styles.verifiedText}>Verified Donor ✅</Text>
-            </View>
+          <Text style={styles.headerSubtitle}>Welcome, Tata Foundation 🌱</Text>
+          <View style={styles.verifiedBadge}>
+            <Text style={styles.verifiedText}>Verified Donor ✅</Text>
           </View>
         </View>
         <TouchableOpacity onPress={() => router.replace('/login')} style={styles.logoutButton}>
@@ -40,7 +70,7 @@ export default function DonorDashboardScreen() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         {/* Utilization Card */}
         <LinearGradient
           colors={['#1a237e', '#283593']}
@@ -99,7 +129,7 @@ export default function DonorDashboardScreen() {
             <View style={styles.missionProgress}>
               <Text style={styles.progressText}>Trees planted: 47/100</Text>
               <View style={styles.missionProgressBarContainer}>
-                <View style={[styles.missionProgressBar, { width: '47%', backgroundColor: '#4caf50' }]} />
+                <View style={[styles.missionProgressBar, { width: '47%' }]} />
               </View>
               <Text style={styles.utilizationText}>Fund utilized: ₹1,50,000 of ₹3,00,000</Text>
             </View>
@@ -127,13 +157,13 @@ export default function DonorDashboardScreen() {
             <View style={styles.missionProgress}>
               <Text style={styles.progressText}>Trees planted: 80/80</Text>
               <View style={styles.missionProgressBarContainer}>
-                <View style={[styles.missionProgressBar, { width: '100%', backgroundColor: '#4caf50' }]} />
+                <View style={[styles.missionProgressBar, { width: '100%' }]} />
               </View>
               <Text style={styles.utilizationText}>Fund utilized: ₹1,70,000 of ₹1,70,000</Text>
             </View>
             
             <View style={styles.missionFooter}>
-              <Text style={styles.missionFooterStats}>12 active users • 312 tasks done</Text>
+              <Text style={styles.missionFooterStats}>18 active users • 784 tasks done</Text>
               <TouchableOpacity style={styles.detailsButton}>
                 <Text style={styles.detailsButtonText}>View Details</Text>
               </TouchableOpacity>
@@ -143,19 +173,23 @@ export default function DonorDashboardScreen() {
 
         {/* Live Activity */}
         <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>📡 Live Activity</Text>
-            <Text style={styles.sectionSubtitle}>Real time updates from the ground</Text>
-          </View>
+          <Text style={styles.sectionTitle}>📡 Live Activity</Text>
+          <Text style={styles.sectionSubtitle}>Real time updates from the ground</Text>
 
           {activities.map((activity) => (
-            <View key={activity.id} style={styles.activityCard}>
-              <View style={styles.activityHeader}>
-                <View style={[styles.dot, { backgroundColor: activity.dot }]} />
-                <Text style={styles.activityText}>{activity.text}</Text>
+            <View key={activity.id} style={[styles.activityCard, { borderLeftColor: activity.borderColor }]}>
+              <View style={styles.activityContent}>
+                <View style={[styles.iconCircle, { backgroundColor: activity.iconBg }]}>
+                  <Text style={styles.activityIconText}>{activity.icon}</Text>
+                </View>
+                <View style={styles.activityTextContainer}>
+                  <View style={styles.activityRow}>
+                    <Text style={styles.activityText}>{activity.text}</Text>
+                    <Text style={styles.activityReward}>{activity.reward}</Text>
+                  </View>
+                  <Text style={styles.activitySubtext}>{activity.subtext}</Text>
+                </View>
               </View>
-              <Text style={styles.activitySubtext}>{activity.subtext}</Text>
-              <Text style={styles.activityReward}>{activity.reward}</Text>
             </View>
           ))}
         </View>
@@ -168,28 +202,8 @@ export default function DonorDashboardScreen() {
           <Text style={styles.fundButtonText}>💰 Add More Funds</Text>
         </TouchableOpacity>
         
-        <View style={{ height: 100 }} />
+        <View style={{ height: 20 }} />
       </ScrollView>
-
-      {/* Donor Tabs */}
-      <View style={styles.tabBar}>
-        <TouchableOpacity style={styles.tabItem}>
-          <Text style={[styles.tabIcon, { color: '#2e7d32' }]}>🏠</Text>
-          <Text style={[styles.tabLabel, { color: '#2e7d32' }]}>Dashboard</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem} onPress={() => router.push('/fund-mission')}>
-          <Text style={styles.tabIcon}>🌍</Text>
-          <Text style={styles.tabLabel}>Fund Mission</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem} onPress={() => router.push('/impact-report')}>
-          <Text style={styles.tabIcon}>📊</Text>
-          <Text style={styles.tabLabel}>Impact</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem} onPress={() => router.push('/profile')}>
-          <Text style={styles.tabIcon}>👤</Text>
-          <Text style={styles.tabLabel}>Profile</Text>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 }
@@ -202,7 +216,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 16,
     backgroundColor: '#0a0a0a',
@@ -212,32 +226,30 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  headerSubtitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 4,
-  },
   headerSubtitle: {
     color: '#888888',
     fontSize: 12,
+    marginTop: 2,
   },
   verifiedBadge: {
-    marginLeft: 8,
-    backgroundColor: 'rgba(46, 125, 50, 0.15)',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgba(46, 125, 50, 0.1)',
+    marginTop: 4,
     borderRadius: 4,
   },
   verifiedText: {
-    color: '#2e7d32',
+    color: '#4caf50',
     fontSize: 10,
     fontWeight: '600',
   },
   logoutButton: {
-    padding: 4,
+    padding: 8,
   },
   logoutIcon: {
     fontSize: 20,
+  },
+  scrollContent: {
+    paddingBottom: 24,
   },
   overviewCard: {
     margin: 16,
@@ -247,7 +259,6 @@ const styles = StyleSheet.create({
   overviewLabel: {
     color: '#ffffff',
     fontSize: 14,
-    opacity: 0.8,
     textAlign: 'center',
   },
   overviewAmount: {
@@ -255,7 +266,7 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginVertical: 12,
+    marginVertical: 8,
   },
   cardDivider: {
     height: 1,
@@ -289,7 +300,7 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     height: 6,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: 'rgba(255,255,255,0.3)',
     borderRadius: 3,
     marginTop: 20,
     overflow: 'hidden',
@@ -302,16 +313,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingHorizontal: 10,
-    marginBottom: 16,
+    marginBottom: 8,
   },
   gridCard: {
-    width: '45%',
+    width: '46%',
     backgroundColor: '#1a1a1a',
-    marginHorizontal: '2.5%',
+    marginHorizontal: '2%',
     marginVertical: 6,
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   gridValue: {
     fontSize: 24,
@@ -324,27 +336,24 @@ const styles = StyleSheet.create({
   },
   section: {
     marginHorizontal: 16,
-    marginTop: 16,
+    marginTop: 24,
   },
   sectionTitle: {
     color: '#ffffff',
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  sectionHeader: {
-    marginBottom: 12,
+    marginBottom: 4,
   },
   sectionSubtitle: {
     color: '#888888',
     fontSize: 12,
-    marginTop: 2,
+    marginBottom: 16,
   },
   missionCard: {
     backgroundColor: '#1a1a1a',
     borderRadius: 16,
     padding: 16,
-    marginBottom: 16,
+    marginBottom: 12,
   },
   missionHeader: {
     flexDirection: 'row',
@@ -376,7 +385,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   progressText: {
-    color: '#aaaaaa',
+    color: '#888888',
     fontSize: 12,
   },
   missionProgressBarContainer: {
@@ -388,16 +397,17 @@ const styles = StyleSheet.create({
   },
   missionProgressBar: {
     height: '100%',
+    backgroundColor: '#4caf50',
   },
   utilizationText: {
-    color: '#aaaaaa',
+    color: '#888888',
     fontSize: 12,
   },
   missionFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: 12,
   },
   missionFooterStats: {
     color: '#888888',
@@ -418,34 +428,49 @@ const styles = StyleSheet.create({
   activityCard: {
     backgroundColor: '#1a1a1a',
     borderRadius: 10,
-    padding: 12,
     marginBottom: 8,
+    borderLeftWidth: 3,
+    overflow: 'hidden',
   },
-  activityHeader: {
+  activityContent: {
     flexDirection: 'row',
+    padding: 12,
     alignItems: 'center',
   },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginRight: 10,
+  iconCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  activityIconText: {
+    fontSize: 16,
+  },
+  activityTextContainer: {
+    flex: 1,
+  },
+  activityRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
   activityText: {
     color: '#ffffff',
-    fontSize: 14,
+    fontSize: 13,
+    flex: 1,
   },
   activitySubtext: {
     color: '#888888',
-    fontSize: 11,
-    marginLeft: 18,
+    fontSize: 10,
     marginTop: 2,
   },
   activityReward: {
     color: '#4caf50',
-    fontSize: 12,
-    marginLeft: 18,
-    marginTop: 4,
+    fontSize: 10,
+    fontWeight: '500',
+    marginLeft: 8,
   },
   fundButton: {
     backgroundColor: '#2e7d32',
@@ -458,33 +483,5 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  tabBar: {
-    flexDirection: 'row',
-    backgroundColor: '#111111',
-    borderTopColor: '#222222',
-    borderTopWidth: 1,
-    height: 70,
-    paddingBottom: 10,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  tabItem: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tabIcon: {
-    fontSize: 20,
-    color: '#666666',
-  },
-  tabLabel: {
-    fontSize: 10,
-    fontWeight: '500',
-    color: '#666666',
-    marginTop: 4,
   },
 });

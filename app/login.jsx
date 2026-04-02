@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   googleG: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#4285F4', // Google Blue as a primary for the placeholder G
+    color: '#4285F4',
   },
   buttonText: {
     color: '#0a0a0a',
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   },
   donorButton: {
     width: '100%',
-    paddingVertical: 16,
+    paddingVertical: 14,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#2e7d32',
@@ -130,5 +130,6 @@ const styles = StyleSheet.create({
     color: '#888888',
     fontSize: 12,
     marginTop: 12,
+    textAlign: 'center',
   },
 });
