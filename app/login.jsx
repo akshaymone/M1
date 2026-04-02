@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   spacer: {
-    height: 120,
+    height: 60,
   },
   button: {
     flexDirection: 'row',

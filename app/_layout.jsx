@@ -15,6 +15,14 @@ export default function RootLayout() {
           tabBarLabelStyle: styles.tabBarLabel,
         }}
       >
+        <Tabs.Screen 
+          name="login" 
+          options={{ 
+            href: null,
+            tabBarStyle: { display: 'none' }
+          }} 
+        />
+        <Tabs.Screen name="index" options={{ href: null }} />
         <Tabs.Screen
           name="home"
           options={{
@@ -56,8 +64,6 @@ export default function RootLayout() {
           }}
         />
         {/* Hide other screens from tabs */}
-        <Tabs.Screen name="index" options={{ href: null }} />
-        <Tabs.Screen name="login" options={{ href: null }} />
         <Tabs.Screen name="plant" options={{ href: null }} />
         <Tabs.Screen name="tree-detail" options={{ href: null }} />
         <Tabs.Screen name="gps-check" options={{ href: null }} />
@@ -67,7 +73,13 @@ export default function RootLayout() {
         <Tabs.Screen name="success" options={{ href: null }} />
         <Tabs.Screen name="review-success" options={{ href: null }} />
         <Tabs.Screen name="upi-setup" options={{ href: null }} />
-        <Tabs.Screen name="donor-dashboard" options={{ href: null }} />
+        <Tabs.Screen 
+          name="donor-dashboard" 
+          options={{ 
+            href: null,
+            tabBarStyle: { display: 'none' }
+          }} 
+        />
         <Tabs.Screen name="fund-mission" options={{ href: null }} />
         <Tabs.Screen name="impact-report" options={{ href: null }} />
       </Tabs>
