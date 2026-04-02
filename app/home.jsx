@@ -63,7 +63,12 @@ export default function HomeScreen() {
             <Text style={styles.greetingText}>Good Morning,</Text>
             <Text style={styles.userNameText}>Akshay 🌱</Text>
           </View>
-          <Image source={{ uri: 'https://i.pravatar.cc/150?img=8' }} style={styles.avatar} />
+          <View style={styles.headerRight}>
+            <TouchableOpacity onPress={() => router.replace('/login')} style={styles.logoutButton}>
+              <Text style={styles.logoutIcon}>🚪</Text>
+            </TouchableOpacity>
+            <Image source={{ uri: 'https://i.pravatar.cc/150?img=8' }} style={styles.avatar} />
+          </View>
         </View>
 
         {/* Stats Row */}
@@ -508,12 +513,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-,
-  fabText: {
-    color: '#ffffff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-});
-
