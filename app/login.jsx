@@ -39,6 +39,22 @@ export default function LoginScreen() {
         </TouchableOpacity>
         
         <Text style={styles.donorSubtext}>For corporate donors and funding partners</Text>
+
+        <View style={styles.dividerContainer}>
+          <View style={styles.divider} />
+          <Text style={styles.dividerText}>or</Text>
+          <View style={styles.divider} />
+        </View>
+
+        <TouchableOpacity 
+          style={styles.corporatorButton} 
+          onPress={() => router.replace('/(corporator)/corporator-dashboard')}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.corporatorButtonText}>Login as Corporator</Text>
+        </TouchableOpacity>
+        
+        <Text style={styles.corporatorSubtext}>For elected corporators and ward representatives</Text>
       </View>
     </SafeAreaView>
   );
@@ -127,6 +143,26 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   donorSubtext: {
+    color: '#888888',
+    fontSize: 12,
+    marginTop: 12,
+    textAlign: 'center',
+  },
+  corporatorButton: {
+    width: '100%',
+    paddingVertical: 14,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#1565c0',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  corporatorButtonText: {
+    color: '#1565c0',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  corporatorSubtext: {
     color: '#888888',
     fontSize: 12,
     marginTop: 12,
