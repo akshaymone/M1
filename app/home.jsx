@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const [expandedTaskId, setExpandedTaskId] = useState(null);
 
   const tasks = [
     {
@@ -125,14 +126,45 @@ export default function HomeScreen() {
                 </Text>
                 <TouchableOpacity 
                   style={[styles.claimButton, task.isReview && { backgroundColor: '#1565c0' }]}
-                  onPress={() => task.isReview ? router.push('/reviewer-notification') : null}
+                  onPress={() => {
+                    if (task.isReview) {
+                      router.push('/reviewer-notification');
+                    } else {
+                      setExpandedTaskId(expandedTaskId === task.id ? null : task.id);
+                    }
+                  }}
                 >
-                  <Text style={styles.claimButtonText}>{task.isReview ? 'Accept Review' : 'Claim'}</Text>
+                  <Text style={styles.claimButtonText}>
+                    {task.isReview ? 'Accept Review' : (expandedTaskId === task.id ? 'Close' : 'Claim')}
+                  </Text>
                 </TouchableOpacity>
               </View>
 
+              {expandedTaskId === task.id && !task.isReview && (
+                <View style={styles.gpsRequirementCard}>
+                  <Text style={styles.gpsRequirementTitle}>📍 GPS Check Required</Text>
+                  <Text style={styles.gpsRequirementSubtext}>
+                    You must be within 50m of the tree to claim this task
+                  </Text>
+                  <TouchableOpacity 
+                    style={styles.checkLocationButton}
+                    onPress={() => router.push('/gps-check')}
+                  >
+                    <Text style={styles.checkLocationButtonText}>Check My Location</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
               <View style={styles.taskBottomRow}>
-                <Text style={styles.distanceText}>📍 {task.distance} away</Text>
+                <View style={styles.bottomLeft}>
+                  <Text style={styles.distanceText}>📍 {task.distance} away</Text>
+                  {!task.isReview && (
+                    <View style={styles.gpsStatusIndicator}>
+                      <View style={styles.orangeDot} />
+                      <Text style={styles.gpsStatusLabel}>GPS pending</Text>
+                    </View>
+                  )}
+                </View>
                 <Text style={[styles.dueText, task.isReview && { color: '#2196f3' }]}>
                   {task.isReview ? 'Review Request' : `Due by ${task.due}`}
                 </Text>
@@ -337,6 +369,63 @@ const styles = StyleSheet.create({
   taskBottomRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  bottomLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  gpsStatusIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: '#f57c0011',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  orangeDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#f57c00',
+  },
+  gpsStatusLabel: {
+    color: '#f57c00',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  gpsRequirementCard: {
+    backgroundColor: '#000000',
+    borderWidth: 1,
+    borderColor: '#f57c0044',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    marginTop: 8,
+  },
+  gpsRequirementTitle: {
+    color: '#f57c00',
+    fontSize: 13,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  gpsRequirementSubtext: {
+    color: '#888888',
+    fontSize: 11,
+    marginBottom: 12,
+  },
+  checkLocationButton: {
+    backgroundColor: '#2e7d32',
+    paddingVertical: 8,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  checkLocationButtonText: {
+    color: '#ffffff',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   distanceText: {
     color: '#888888',

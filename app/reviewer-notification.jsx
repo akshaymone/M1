@@ -52,6 +52,23 @@ export default function ReviewerNotificationScreen() {
 
           <View style={styles.divider} />
 
+          {/* GPS Status Row */}
+          <View style={styles.gpsStatusRow}>
+            <Text style={styles.gpsLabel}>GPS Status</Text>
+            <View style={styles.verifiedBadge}>
+              <Text style={styles.verifiedBadgeText}>✅ Verified at location</Text>
+            </View>
+          </View>
+
+          {/* Map Preview Placeholder */}
+          <View style={styles.mapPreview}>
+            <View style={styles.mapPreviewGridV} />
+            <View style={styles.mapPreviewGridH} />
+            <Text style={styles.mapPreviewText}>📍 Doer is 12m from tree</Text>
+          </View>
+
+          <View style={styles.divider} />
+
           {/* Task Row */}
           <View style={styles.infoRow}>
             <Text style={styles.icon}>🌱</Text>
@@ -201,6 +218,60 @@ const styles = StyleSheet.create({
     color: '#4caf50',
     fontSize: 12,
     marginTop: 2,
+  },
+  gpsStatusRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  gpsLabel: {
+    color: '#888888',
+    fontSize: 14,
+  },
+  verifiedBadge: {
+    backgroundColor: '#2e7d3222',
+    borderWidth: 1,
+    borderColor: '#2e7d32',
+    borderRadius: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+  },
+  verifiedBadgeText: {
+    color: '#4caf50',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  mapPreview: {
+    height: 60,
+    backgroundColor: '#333333',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  mapPreviewGridV: {
+    position: 'absolute',
+    left: '50%',
+    top: 0,
+    bottom: 0,
+    width: 1,
+    backgroundColor: '#444',
+  },
+  mapPreviewGridH: {
+    position: 'absolute',
+    top: '50%',
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: '#444',
+  },
+  mapPreviewText: {
+    color: '#4caf50',
+    fontSize: 12,
+    fontWeight: 'bold',
+    zIndex: 1,
   },
   rewardSection: {
     alignItems: 'center',
